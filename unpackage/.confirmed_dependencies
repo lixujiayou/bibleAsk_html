@@ -1,0 +1,104 @@
+{
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "examples/main_tab.html"
+    ]
+  },
+  "examples/main_tab.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mx.css",
+      "css/mui.min.css",
+      "examples/askSub.html",
+      "js/bmob-min.js"
+    ],
+    "refer": [
+      "examples/shareSub.html",
+      "examples/mineSub.html",
+      "examples/askSub.html"
+    ]
+  },
+  "examples/askSub.html": {
+    "resources": [
+      "images/yuantiao.jpg",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/icon_m_start.9.png",
+      "images/shuijiao.jpg",
+      "images/icon_m_online.9.png",
+      "images/icon_m_time.9.png",
+      "images/icon_m_help.9.png",
+      "images/img_huoer.jpg",
+      "js/bmob-min.js"
+    ],
+    "refer": [
+      "examples/ask/askIng.html",
+      "examples/ask/feedback.html",
+      "examples/share/shareContent2.html"
+    ]
+  },
+  "examples/shareSub.html": {
+    "resources": [
+      "css/mui.min.css",
+      "css/mx.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "js/bmob-min.js",
+      "images/cbd.jpg"
+    ],
+    "refer": [
+      "examples/share/shareContent.html",
+      "examples/share/shareContent2.html"
+    ]
+  },
+  "examples/mineSub.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/mx.css",
+      "js/bmob-min.js"
+    ]
+  },
+  "examples/share/shareContent.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mx.css",
+      "css/mui.min.css",
+      "js/html2canvas.js",
+      "images/cbd.jpg",
+      "js/Canvas2Image.js",
+      "images/icon_s_help.png",
+      "images/yuantiao.jpg"
+    ]
+  },
+  "examples/ask/askIng.html": {
+    "resources": [
+      "images/bg.png",
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "images/sound_y_d.png",
+      "images/icon_skip.png",
+      "images/icon_s_help.png",
+      "css/mx.css",
+      "xml/pronlem_.xml",
+      "xml/answers_.xml",
+      "fonts/mui.ttf",
+      "css/mdialog.css",
+      "js/dialogFx.js",
+      "js/classie.js",
+      "js/modernizr.custom.js",
+      "js/modalEffects.js",
+      "css/dialog-val.css",
+      "css/dialog-don.css",
+      "css/demo.css",
+      "css/dialog.css",
+      "css/normalize.css"
+    ]
+  }
+}

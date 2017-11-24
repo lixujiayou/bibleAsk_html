@@ -1,0 +1,905 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mx.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/sweetalert.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/animate.min.css">
+		<style>
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			
+			#info {
+				padding: 20px 10px;
+			}
+			/*.des {
+				margin: .5em 0;
+			}
+			.des>li {
+				font-size: 14px;
+				color: #8f8f94;
+			}*/
+			
+			.long-shadow,
+			.medium-shadow {
+				border: none;
+				-o-text-overflow: clip;
+				text-overflow: clip;
+			}
+			
+			.long-shadow {
+				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
+				text-shadow: 3px 3px 0 #4C6A92, 4px 4px 0 #4C6A92, 5px 5px 0 #4C6A92, 6px 6px 0 #4C6A92, 7px 7px 0 #4C6A92, 8px 8px 0 #4C6A92, 9px 9px 0 #4C6A92, 10px 10px 0 #4C6A92, 11px 11px 0 #4C6A92, 12px 12px 0 #4C6A92, 13px 13px 0 #4C6A92, 14px 14px 0 #4C6A92, 15px 15px 0 #4C6A92, 16px 16px 0 #4C6A92, 17px 17px 0 #4C6A92, 18px 18px 0 #4C6A92, 19px 19px 0 #4C6A92, 20px 20px 0 #4C6A92;
+			}
+			
+			h1 .animateTitle1 {
+				font-size: 10vh;
+				letter-spacing: 2.7vh;
+				color: #FFF;
+				padding: 1em 0;
+			}
+			
+			h4 {
+				font-size: 34px;
+				font-weight: bold;
+			}
+			
+			.text-danger {
+				color: #000000
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/sweetalert-dev.js"></script>
+		<script src="../../js/jquery-2.1.0.js"></script>
+		<script type="text/javascript" src="../../js/dist/animatext.min.js"></script>
+		<script src="../../js/html2canvas.js"></script>
+		<script src="../../js/Canvas2Image.js"></script>
+		<script src="../../js/vue.min.js"></script>
+		<!--<script src="../../js/immersed2.js"></script>-->
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div class="container">
+			<div id="page" class="mui-content" style="position: absolute; height: 100%; width: 100%; background-size:100% 100%; background-attachment: fixed;padding-top: 20px; background-image: url(../../images/bg.png);">
+				<div class="mui-media-body" style="height: 10%; margin: 5px;text-align: center;">
+					<p id="title_type" class="titleMy" style="color: white; font-size: 18px;">正在答题：四福音</p>
+					<p id="tv_count_num" class="titleMy" style="color: white; font-size: 24px;">25</p>
+				</div>
+
+				<div class="mui-media-body" style="height: 10%; text-align: center;">
+					<p id="tv_score" class="mui-pull-left" style="color: white; font-size: 18px; margin-left: 10px;">0</p>
+						<p id="tv_hint" class="mui-pull-right" style="display: none; color: white; font-size: 11px;margin-right: 10px;">图片来自于圣经问答</p>
+				</div>
+
+				<p class="mui-progressbar mui-progressbar-success" style="height: 0.5%; background: white;" data-progress="20"><span></span></p>
+				<div class="mui-media-body" style=" min-height: 22%; padding:20px 4px; ">
+					<!--					<p id="tv_topic" class="contentMy" style="color: white; font-size: 18px;"></p>
+-->
+					<p id="tv_topic" class="contentMy" style="color: white; font-size: 18px;"></p>
+
+				</div>
+				<p class="mui-progressbar mui-progressbar-danger" style="height: 0.5%; background: white;" data-progress="50"><span></span></p>
+
+				<ul class="mui-table-view mui-grid-view mui-row" style="height: 34%; background: transparent; text-align: center;">
+					<li id="tv_a1" class="answer4 mui-table-view-cell mui-media mui-col-xs-6 effectTran" style="min-height: 50%; text-align: center;">
+					</li>
+					<li id="tv_a2" class="answer4 mui-table-view-cell mui-media mui-col-xs-6 effectTran" style="min-height: 50%; text-align: center;">
+					</li>
+
+					<li id="tv_a3" class="answer4 mui-table-view-cell mui-media mui-col-xs-6 effectTran" style="min-height: 50%; text-align: center;">
+					</li>
+					<li id="tv_a4" class="answer4 mui-table-view-cell mui-media mui-col-xs-6 effectTran" style="min-height: 50%;text-align: center;">
+					</li>
+				</ul>
+				<p style="height: 2%;"></p>
+				<ul class="mui-table-view mui-row  mui-bar-tab" style="height: 13%;background: transparent;">
+					<div href="#picture" id="bt_help" class="help mui-tab-item effectTran" style="width: 100%;">
+						<img class="mui-icon" src="../../images/icon_s_help.png" style="height: 46px; width: 46px;"></img>
+					</div>
+					<div id="bt_volume" class="mui-tab-item effectTran" style="width: 100%;">
+						<img id="img_volume" class="mui-icon" src="../../images/sound_y_d.png" style="height: 46px; width: 46px;"></img>
+					</div>
+					<div id="bt_skip" class="mui-tab-item effectTran" style="width: 100%;">
+						<img class="mui-icon" src="../../images/icon_skip.png" style=" height: 46px; width: 46px;"></img>
+					</div>
+				</ul>
+				
+				
+				
+<!--				
+			<div id="line_bottome" class="mui-content"  style="height: 60px; display: block; padding-top: 0px; margin-top: 0px; background: white;">
+				<hr id="line_gone" style=" border : 1px dashed #666666;" />
+				<div id="view_gone" style=" padding-left: 10px; padding-right: 10px; padding-bottom: 16px;">
+					<img src="../../images/ic_launcher.png" />
+					<p style="display: inline;position: absolute; margin-left: 10px;">圣经问答<br />扎根于圣经，建基于祷告。</p>
+				</div>
+			</div>-->
+			
+			
+			</div>
+			
+			
+			
+			
+		</div>
+
+		<div id="picture" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<div id="bt_help_share" class="mui-table-view-cell">
+					<a href="#picture">暂停求助</a>
+				</div>
+
+				<!--<div id="bt_help_out" class="mui-table-view-cell">
+					<a href="#picture">去掉两个错误答案(2)</a>
+				</div>-->
+			</ul>
+			<ul class="mui-table-view">
+				<div class="mui-table-view-cell">
+					<a href="#picture"><b>取消</b></a>
+				</div>
+			</ul>
+		</div>
+		
+	</body>
+
+</html>
+<script type="text/javascript">
+	var shares = null;
+	var isVolume = true;
+	var tvHint;
+	var mainbgm = "_www/audio/gaming.mp3"; //点击音效
+	var clickBgm = "_www/audio/click_sound.mp3"; //点击音效
+	var lianji1Bgm = "_www/audio/lianji101.mp3"; //答对一题
+	var lianji2Bgm = "_www/audio/lianji101.mp3"; //连续答对2题
+	var lianji3Bgm = "_www/audio/lianji101.mp3"; //连续答对3题
+	var lianji4Bgm = "_www/audio/lianji101.mp3"; //连续答对4题
+	var yesBgm = "_www/audio/lianji101.mp3"; //连续答对封顶
+	var erroBgm = "_www/audio/timeover_.mp3"; //答错
+	var timeOverBgm = "_www/audio/timeover.mp3"; //倒计时10秒
+	var gameOverBgm = "_www/audio/jiesuan01.mp3"; //答题结束
+
+	var tvTitle;
+
+	var bgm = null;
+	var countDownNum = 26;//每题倒计时时间
+	var isPauseCountDown = false;//是否暂停倒计时
+	var successScore = 100;
+	var erroScore = 90;
+	var helpOutNum = 2;//去掉两个错误答案 个数
+	
+	var skipScore = 50;//跳过一题减分
+	var everyNum = 25; //每次答题数量 
+	var ereryTopic = new Array; //每次随记题下标的集合
+	var questionList = new Array; //当前类型题库的所有
+	var answerList; //当前的随记答案集合
+	//var currentAnswer;//当前题目的答案 
+	var currentNum = 0; //当前答题进度
+	var currentScore = 0; //当前得分
+	var xmldoc; //解析xml字段
+
+	var isRW; //记录本提选择的对错
+
+	var topicText; //问题 
+	var a1Text;
+	var a2Text;
+	var a3Text;
+	var a4Text;
+	//	var tvSelect; //我的选择  
+	var tvScore; //我的得分
+
+	//dialog的文本
+	var dTitle;
+	var dContent;
+
+	var continuousRightNum = 0; //连续答对个数
+	var continuousErrorsNum = 0; //连续答错个数
+
+	var btVolume;
+	var btSkip;
+	var imgVolume;
+	
+	var tvCountNum;
+//	var lineBottome;
+	
+	
+	//var btHelpShare;
+	mui.plusReady(function() {
+		startBgm(mainbgm, 1);
+
+		var wv = plus.webview.currentWebview();
+		// 关闭侧滑返回功能
+		//wv.setStyle({'popGesture':'none'});
+		// 侧滑返回后关闭webview
+		wv.setStyle({
+			'popGesture': 'close'
+		});
+
+		mui('body').on('shown', '.mui-popover', function(e) {
+			//console.log('shown', e.detail.id);//detail为当前popover元素
+		});
+		mui('body').on('hidden', '.mui-popover', function(e) {
+			//console.log('hidden', e.detail.id);//detail为当前popover元素
+		});
+		var info = document.getElementById("info");
+		mui('body').on('tap', '.help', function() {
+			var a = this;
+			//关闭actionsheet
+			mui('#picture').popover('toggle');
+			console.log("=====" + a.id);
+			//info.innerHTML = "你刚点击了\"" + a.innerHTML + "\"按钮";
+			startMusic(clickBgm);
+		})
+	//	lineBottome = document.getElementById("line_bottome");
+		topicText = document.getElementById("tv_topic");
+		a1Text = document.getElementById("tv_a1");
+		a2Text = document.getElementById("tv_a2");
+		a3Text = document.getElementById("tv_a3");
+		a4Text = document.getElementById("tv_a4");
+		//		tvSelect = document.getElementById("tv_select");
+		tvScore = document.getElementById("tv_score");
+		tvHint = document.getElementById("tv_hint");
+		dTitle = document.getElementById("dialog_title");
+		dContent = document.getElementById("dialog_content");
+
+		tvTitle = document.getElementById("title_type");
+		btVolume = document.getElementById("bt_volume");
+		btSkip = document.getElementById("bt_skip");
+		imgVolume = document.getElementById("img_volume");
+		tvCountNum = document.getElementById("tv_count_num");
+		btHelpShare = document.getElementById("bt_help_share");
+	//	btHelpOut = document.getElementById("bt_help_out");
+
+		//initTextAnime(); 
+		updateSerivces();
+		initTap();
+		getTopicAll();
+		initData();
+	})
+
+	function initData() {
+		console.log(currentNum + "当前=====共" + everyNum);
+		if(currentNum == everyNum) {
+			
+			//mui.toast("结束");
+			gameOverDialog();
+			return;
+		}
+
+		//tvSelect.textContent = "未选择";	
+		topicText.innerHTML = " " + questionList[currentNum];
+		//打乱选项
+		var answerListTest = new Array;
+		var answerTest = new Array;
+		for(var i = 0; i < answerList.get(currentNum).length; i++) {
+			answerTest[i] = i + 1;
+		}
+		var num;
+		for(var i = 0; i < answerList.get(currentNum).length; i++) {
+			do {
+				num = parseInt(Math.random() * answerList.get(currentNum).length);
+			} while (answerTest[num] == null);
+			answerListTest[i] = answerList.get(currentNum)[num];
+			answerTest[num] = null;
+		}
+		a1Text.innerText = "A、" + answerListTest[0];
+		a2Text.innerText = "B、" + answerListTest[1];
+		a3Text.innerText = "C、" + answerListTest[2];
+		a4Text.innerText = "D、" + answerListTest[3];
+		initTextAnime();
+		countDownNum = 25;
+		isPauseCountDown = false;
+		countDown();
+	}
+
+	function initTap() {
+		/** 0stop 1start 2pause 3resume
+		 * 音量键
+		 */
+		btVolume.addEventListener("tap", function() {
+			if(isVolume == true) {
+				isVolume = false;
+				imgVolume.src = "../../images/sound_n_d.png";
+				if(bgm != null){
+					startBgm(mainbgm,2)
+				}
+			} else {
+				isVolume = true;
+				imgVolume.src = "../../images/sound_y_d.png";
+				if(bgm != null){
+					startBgm(mainbgm,3)
+				}else{
+					startBgm(mainbgm,1)
+				}
+			}
+		});
+		
+		btHelpShare.addEventListener("tap",function(){
+			shareShow();
+		});
+//		btHelpOut.addEventListener("tap",function(){
+//			if(helpOutNum > 0){
+//				
+//				helpOutNum -= 1 ;
+//			}
+//		});
+		
+		/**
+		 *跳过本题 
+		 */
+		btSkip.addEventListener("tap",function(){
+			startMusic(clickBgm);
+			//连对清零
+			continuousRightNum = 0;
+			currentScore -= skipScore;
+			tvScore.innerHTML = currentScore;
+			currentNum += 1;
+			initData();
+		});
+		
+		/**
+		 *四个选项键 
+		 */
+		mui('.mui-table-view').on("tap", "li", function(e) {
+			startMusic(clickBgm);
+			var cID = this.getAttribute("id");
+			var text = document.getElementById(cID).textContent;
+			console.log("====" + text);
+			var cMy = text.substr(2, text.length).trim();
+			var cRight = answerList.get(currentNum)[0].trim();
+			if(isEmpty1(cMy) || cMy == '未选择') {
+				return;
+			}
+			console.log("正确答案=" + cRight);
+			console.log("我的选择=" + cMy);
+			console.log("我的选择=" + (cMy == cRight));
+			if(cMy == cRight) {
+				SuccessDialog();
+			} else {
+				ErroDialog(cRight);
+			}
+
+		})
+
+		
+	}
+
+	function initTextAnime() {
+
+
+		$(".contentMy").animatext({
+			speed: 100,
+			mode: "words",
+			effect: 'swing',
+			infinite: false
+		});
+
+		$(".answer4").animatext({
+			speed: 150,
+			effect: 'words',
+			infinite: false
+		});
+	}
+
+	/**
+	 * 答对提示
+	 */
+	function SuccessDialog() {
+		isPauseCountDown = true;
+		continuousRightNum += 1; //连续答对记录
+		continuousErrorsNum = 0;
+		currentScore += successScore * continuousRightNum;
+		if(continuousRightNum == 1) {
+			startMusic(lianji1Bgm);
+		} else if(continuousRightNum == 2) {
+			startMusic(lianji2Bgm);
+		} else if(continuousRightNum == 3) {
+			startMusic(lianji3Bgm);
+		} else if(continuousRightNum == 4) {
+			startMusic(lianji4Bgm);
+		} else {
+			startMusic(yesBgm);
+		}
+		swal({
+			title: "嗯哼Good job!",
+			text: tvScore.textContent + " + " + successScore + " × " + continuousRightNum + " = " + currentScore,
+			type: "success",
+			confirmButtonText: "下一题",
+			confirmButtonColor: "#AEDEF4"
+		}, function() {
+
+			tvScore.innerHTML = currentScore;
+			currentNum += 1;
+			initData();
+		});
+	}
+
+	/**
+	 * 错误提示
+	 */
+	function ErroDialog(successA) {
+		isPauseCountDown = true;
+		continuousErrorsNum += 1; //连续答错记录
+		currentScore -= erroScore * continuousErrorsNum;
+		startMusic(erroBgm);
+		swal({
+			title: "正确答案：" + successA,
+			text: tvScore.textContent + " - " + erroScore + " × " + continuousErrorsNum + " = " + currentScore,
+			type: "error",
+			confirmButtonText: "记住啦",
+			confirmButtonColor: "#ec6c62"
+		}, function() {
+
+			if(continuousErrorsNum >= 2) { //连续答错两题，计算得分退出
+				gameOverDialog();
+				return;
+			} else {
+				tvScore.innerHTML = currentScore;
+			}
+			continuousRightNum = 0; //连对个数清零
+			currentNum += 1; //下一题
+
+			initData();
+		});
+	}
+
+	/**
+	 * 判断字符串是否为空
+	 */
+	function isEmpty1(str) {
+		if(str == null || str.length == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	//验证对错
+	function checkRW() {
+		//		var cMy = tvSelect.textContent;
+		var cRight = answerList.get(currentNum)[0];
+		if(cMy == cRight) {
+			currentScore += 100;
+			isRW = true;
+		} else {
+			currentScore -= 100;
+			isRW = false;
+		}
+		tvScore.innerHTML = currentScore;
+	}
+
+	function popupBefore() {
+		if(currentNum < everyNum) {
+			checkRW();
+		}
+	}
+
+	function popupAfter() {
+		if(currentNum < everyNum) {
+			initData();
+			currentNum += 1;
+		} else {
+			console.log("======end");
+			//mui.alert("最后一题");
+			//mui.back();  
+		}
+	}
+	/**
+	 *答题结束 
+	 */
+	function onAnswerEnd() {
+		if(currentNum >= everyNum) {
+
+		}
+	}
+
+	function getTopicAll() {
+		//获取配置信息  
+		if(xmldoc == null)
+			xmldoc = loadXML("../../xml/pronlem_.xml");
+
+		var elements = xmldoc.getElementsByTagName("resources");
+		var groupList = elements[0].getElementsByTagName("string-array")[0].getElementsByTagName("item");
+
+		var originalArray = new Array; //原数组
+		//给原数组originalArray赋值
+		for(var i = 0; i < groupList.length; i++) {
+			originalArray[i] = i + 1;
+		}
+		//随记取出everyNum个数的题
+		var num;
+		for(var i = 0; i < everyNum; i++) {
+			do {
+				num = parseInt(Math.random() * groupList.length);
+			} while (originalArray[num] == null);
+
+			ereryTopic[i] = num;
+			originalArray[num] = null;
+		}
+		for(var i = 0; i < ereryTopic.length; i++) {
+			questionList[i] = groupList[ereryTopic[i]].childNodes[0].nodeValue;
+		}
+
+		getAnswerAll();
+	}
+	
+	function gameOverDialog(){
+		startBgm(mainbgm, 0);
+		startMusic(gameOverBgm);
+		var mDesignation;
+		
+		if(currentScore >= 9600){
+			mDesignation = "在路上";
+		}else if(currentScore >= 7600 && currentScore < 9600){
+			mDesignation = "摸爬滚打";
+		}else if(currentScore >= 3600 && currentScore < 7600){
+			mDesignation = "跌跌撞撞";
+		}else if(currentScore >= 2000 && currentScore < 3600){
+			mDesignation = "还差一点";
+		}else{
+			mDesignation = "云里雾里";
+		}
+		var title1 = "答题结束";
+		var content1 = mDesignation+"("+currentScore+")";
+		mui.alert(content1, title1, function() {
+			mui.back();
+		});
+	}
+	
+	
+	function countDown(){
+		if(isPauseCountDown == false){
+			if(countDownNum > 0){
+				countDownNum -= 1;
+				setTimeout(function(){
+					tvCountNum.innerText = countDownNum+"";
+					countDown();
+				},1000)
+			}else{
+				//本题时间结束  结算得分
+				gameOverDialog();
+			}
+		}else{
+			countDownNum = 26;
+		}
+		 
+	}
+	
+	
+	//获取答案集合--全部
+	function getAnswerAll() {
+		xmldoc = loadXML("../../xml/answers_.xml");
+		var elements = xmldoc.getElementsByTagName("resources");
+		var groupList = elements[0].getElementsByTagName("array"); //[0].getElementsByTagName("item");
+		answerList = new Map;
+
+		for(var i = 0; i < everyNum; i++) {
+			var answerListTest = new Array; //
+			var testList = groupList[ereryTopic[i]].getElementsByTagName("item");
+			for(var ii = 0; ii < testList.length; ii++) {
+
+				answerListTest[ii] = testList[ii].childNodes[0].nodeValue;
+				if(ii == testList.length - 1) {
+					answerList.set(i, answerListTest);
+				}
+			}
+		}
+	//	console.log("答案个数==" + groupList.length);
+	}
+
+	function loadXML(xmlFile) {
+		if(window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari  
+			xmlhttp = new XMLHttpRequest();
+		} else { // code for IE6, IE5  
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.open("GET", xmlFile, false);
+		xmlhttp.send();
+		xmlDoc = xmlhttp.responseXML;
+		return xmlDoc;
+	}
+
+	/**
+	 * 
+	 * @param {Object} url 
+	 * @param {Object} type  0stop 1start 2pause 3resume
+	 */
+	function startBgm(url, type) {
+	//	if(isVolume == true) {
+			if(type == 1) {
+				if(bgm == null) {
+					bgm = plus.audio.createPlayer(url);
+					bgm.play(function() {
+						startBgm(mainbgm,1); 
+					}, function(e) { 
+						//console.log("=" + '播放音频文件"' + url + '"失败：' + e.message+"=="+e.code)
+						console.log("==="+e.toString());
+					});
+					console.log("音乐控制start");
+				} else {
+					bgm.resume();
+				}
+			} else if(type == 2) {
+				if(bgm != null) {
+					console.log("音乐控制pause");
+					bgm.pause();
+				}
+			}else if(type == 3){
+				if(bgm != null) {
+					console.log("音乐控制resume");
+					bgm.resume();
+				}
+			}else {
+				if(bgm != null) {
+					console.log("音乐控制stop");
+					bgm.stop();
+				}
+			}
+	//	}
+	}
+
+	function startMusic(url) {
+		if(isVolume == true){
+			var bg = plus.audio.createPlayer(url);
+			bg.play(function() {}, function(e) {
+				console.log("=" + '播放音频文件1"' + url + '"失败：' + e.message)
+			});
+		}
+	}
+
+	function obj2string(o) {
+		var r = [];
+		if(typeof o == "string") {
+			return "\"" + o.replace(/([\'\"\\])/g, "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g, "\\t") + "\"";
+		}
+		if(typeof o == "object") {
+			if(!o.sort) {
+				for(var i in o) {
+					r.push(i + ":" + obj2string(o[i]));
+				}
+				if(!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)) {
+					r.push("toString:" + o.toString.toString());
+				}
+				r = "{" + r.join() + "}";
+			} else {
+				for(var i = 0; i < o.length; i++) {
+					r.push(obj2string(o[i]))
+				}
+				r = "[" + r.join() + "]";
+			}
+			return r;
+		}
+		return o.toString();
+	}
+	
+	
+	
+	
+	
+	var isHeight = false;
+	var main = {
+		init: function(sb, bh) {
+			isPauseCountDown = true;
+			tvHint.style.display = "block";
+			main.setListener(sb, bh);
+		},
+		//设置监听事件
+		setListener: function(sb, bh) {
+			main.html2Canvas(sb, bh);
+		},
+		//获取像素密度
+		getPixelRatio: function(context) {
+			var backingStore = context.backingStorePixelRatio ||
+				context.webkitBackingStorePixelRatio ||
+				context.mozBackingStorePixelRatio ||
+				context.msBackingStorePixelRatio ||
+				context.oBackingStorePixelRatio ||
+				context.backingStorePixelRatio || 1;
+			return(window.devicePixelRatio || 1) / backingStore;
+		},
+		//绘制dom 元素，生成截图canvas
+		html2Canvas: function(sb, bh) {
+			
+			plus.nativeUI.showWaiting("正在发起求助分享...");
+			var shareContent = document.getElementById("page");
+			var width = shareContent.offsetWidth; // 获取(原生）dom 宽度
+			var height = shareContent.offsetHeight; // 获取(原生）dom 高
+			var offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
+			var canvas = document.createElement('canvas'); //创建canvas 对象
+			var context = canvas.getContext('2d');
+			var scaleBy = main.getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+			scaleBy = 2;
+			canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+			canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+
+			console.log("====scaleBy1== " + canvas.width);
+			console.log("====scaleBy1== " + canvas.height);
+
+			context.scale(scaleBy, scaleBy);
+			var opts = { 
+				allowTaint: true, //允许加载跨域的图片 
+				tainttest: true, //检测每张图片都已经加载完成
+				scale: scaleBy, // 添加的scale 参数
+				canvas: canvas, //自定义 canvas  
+				logging: false, //日志开关，发布的时候记得改成false
+				width: width, //dom 原始宽度
+				height: height //dom 原始高度
+			};
+			html2canvas(shareContent, opts).then(function(canvas) {
+				tvHint.style.display = "none";
+				console.log("html2canvas");
+					if(isHeight == false){
+		//				lineBottome.style.display = "none";
+						var bitmap = new plus.nativeObj.Bitmap();
+							console.log("55555555");
+							bitmap.loadBase64Data(canvas.toDataURL(), function() {
+								console.log("加载Base64图片数据成功");
+								bitmap.save("_doc/a.jpg", {
+									overwrite: true
+								}, function(i) {
+									console.log('保存图片成功');
+									var imgtest = JSON.parse(JSON.stringify(i)).target;
+									pic = imgtest;
+									compressImage(imgtest, sb, bh);
+								}, function(e) {
+									plus.nativeUI.closeWaiting();
+									console.log('保存图片失败：' + JSON.stringify(e));
+								});
+							}, function() {
+								plus.nativeUI.closeWaiting();
+								console.log('加载Base64图片数据失败：' + JSON.stringify(e));
+							});
+					}else{
+						//main2.init(canvas,sb, bh);
+					}
+			});
+		}
+	};
+	
+	//压缩图片
+	function compressImage(path1, sb, bh) {
+		//var hb_path = '_downloads/image/compressImage.jpg'; //HBuilder平台路径
+		//	var sd_path = plus.io.convertLocalFileSystemURL(hb_path); //SD卡绝对路径
+		plus.zip.compressImage({
+				src: path1,
+				dst: path1,
+				overwrite: true,
+				quality: 20
+			},
+			function() {
+				plus.nativeUI.closeWaiting();
+				shareAction(sb, bh);
+				//var target = event.target; // 压缩转换后的图片url路径，以"file://"开头
+				//var size = event.size; // 压缩转换后图片的大小，单位为字节（Byte）
+			},
+			function(error) {
+				plus.nativeUI.closeWaiting();
+				console.log(error.code + "Compress error!" + error.message);
+				alert(error.code + "Compress error!" + error.message);
+			});
+	}
+	
+	/**
+	 * 分享操作
+	 * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
+	 * @param {Boolean} bh 是否分享链接
+	 */
+	function shareAction(sb, bh) {
+		bh = false;
+		console.log("=====分享操作");
+		if(!sb || !sb.s) {
+			console.log("=====无效的分享服务！");
+			return;
+		}
+		var msg = {
+			content: "",
+			extra: {
+				scene: sb.x
+			}
+		};
+		if(bh) {
+			msg.href = sharehref.value;
+			if(sharehrefTitle && sharehrefTitle.value != '') {
+				msg.title = sharehrefTitle.value;
+			}
+			if(sharehrefDes && sharehrefDes.value != '') {
+				msg.content = sharehrefDes.value;
+			}
+			msg.thumbs = ['_www/logo.png'];
+			msg.pictures = ['_www/logo.png'];
+		} else {
+			console.log("pic====" + pic);
+			//			if(pic && pic.realUrl) {
+			//				console.log("pic====" + pic);
+			//				console.log("pic.realUrl====" + pic.realUrl);
+			//				msg.pictures = [pic.realUrl];
+			//			}
+			msg.pictures = [pic];
+		}
+		// 发送分享
+		if(sb.s.authenticated) {
+			//console.log("=====已授权！");
+			shareMessage(msg, sb.s);
+		} else {
+			//console.log("=====未授权！");
+			sb.s.authorize(function() {
+				shareMessage(msg, sb.s);
+			}, function(e) {
+			//	console.log('认证授权失败：' + e.code + ' - ' + e.message);
+			});
+		}
+	}
+	/**
+	 * 发送分享消息
+	 * @param {JSON} msg
+	 * @param {plus.share.ShareService} s
+	 */
+	function shareMessage(msg, s) {
+	//	console.log(JSON.stringify(msg));
+		s.send(msg, function() {
+			//countDownNum = 26;
+			//countDown();
+			mui.toast("求助完成，答题继续");
+			console.log('分享到"' + s.description + '"成功！');
+		}, function(e) {
+			isPauseCountDown = false;
+			countDownNum = 26;
+			countDown();
+			mui.toast("答题继续");
+			console.log('分享到"' + s.description + '"失败: ' + JSON.stringify(e));
+		});
+	}
+	// 打开分享
+	function shareShow() {
+		var shareBts = [];
+		// 更新分享列表
+		var ss = shares['weixin'];
+		if(navigator.userAgent.indexOf('qihoo') < 0) { //在360流应用中微信不支持分享图片
+			ss && ss.nativeClient && (shareBts.push({
+					title: '到朋友圈求助',
+					s: ss,
+					x: 'WXSceneTimeline'
+				}),
+				shareBts.push({
+					title: '到微信好友求助',
+					s: ss,
+					x: 'WXSceneSession'
+				}));
+		}
+		// 弹出分享列表
+		shareBts.length > 0 ? plus.nativeUI.actionSheet({
+			title: '分享',
+			cancel: '取消',
+			buttons: shareBts
+		}, function(e) {
+			(e.index > 0) && main.init(shareBts[e.index - 1], false);
+		}) : plus.nativeUI.alert('当前环境无法支持分享操作!');
+	}
+	/** 
+	 * 更新分享服务
+	 */
+	function updateSerivces() {
+		plus.share.getServices(function(s) {
+			shares = {};
+			for(var i in s) {
+				var t = s[i];
+				shares[t.id] = t;
+			}
+		}, function(e) {
+			//outSet('获取分享服务列表失败：' + e.message);
+		});
+	}
+</script>

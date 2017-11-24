@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" /> 
+		<link rel="stylesheet" type="text/css" href="../css/mx.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<style type="text/css">
+			.mui-media {
+				font-size: 14px;
+			}
+			
+			.mui-table-view .mui-media-object {
+				max-width: initial;
+				width: 90px;
+				height: 70px;
+			}
+			
+			.meta-info {
+				position: absolute;
+				left: 115px;
+				right: 15px;
+				bottom: 8px;
+				color: #8f8f94;
+			}
+			
+			.meta-info .author,
+			.meta-info .time {
+				display: inline-block;
+			}
+			
+			.meta-info .time {
+				float: right;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after {
+				height: 0;
+			}
+			
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 1px;
+			}
+			
+			.banner {
+				height: 180px;
+				overflow: hidden;
+				position: relative;
+				background-position: center;
+				background-color: #ccc;
+			}
+			
+			.banner img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.banner .title {
+				position: absolute;
+				left: 15px;
+				bottom: 15px;
+				width: 90%;
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 21px;
+				color: white;
+				z-index: 11;
+			} 
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/bmob-min.js"></script>
+		<script src="../js/immersed.js"></script>
+		<script type="text/javascript">
+			Bmob.initialize("21bfb1f1037b3963aaa2fe01bee1bc68", "2ad5eef1e9db172e8448216b0f16a5b8");
+			mui.init()
+		</script>
+	
+		<header id="header">
+			<div class="nvtt">我的</div> 
+		</header>
+	<!--<header id="header" class="mui-bar mui-bar-nav" style="background: white;">
+		    <h1 class="mui-title">我的</h1>
+		</header>-->
+		<div class="mui-content" style="padding-top: 60px; ">
+			<ul class="mui-table-view"> 
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							<p class="mui-ellipsis">笔记</p>
+						</div>
+					</a>
+				</li>
+
+				
+			</ul>
+
+			</div>
+ 
+	</body>
+</html>
+<script type="text/javascript">
+	//plus.webview.currentWebview().setStyle( {statusbar:{background:'#f7f7f7'},top:'0px',bottom: '50px'} );  
+</script>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mx.css"/>
+				<link rel="stylesheet" type="text/css" href="../../css/list-to-detail.css" />
+
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/immersed2.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="background: white;">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title" style="color: black;">关于我们</h1>
+		</header>
+		<div class="mui-content">
+		   <div id="kr-article-article" class="kr-article-article" v-html="content">
+		   			 <p style="margin-top: 120px; color: black;">圣经问答</p>
+		   			<p style="color: black;"> 扎根于圣经，建基于祷告</p>
+		   			<p> QQ群：142590430</p>
+		   			<p> 邮箱：bibleAsk@163.com</p>
+					<img  style="width: 70px; text-align: center;" src="../../images/ic_launcher_da.png">
+		   </div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	mui.plusReady(function(){
+				var wv=plus.webview.currentWebview();
+				// 关闭侧滑返回功能
+				//wv.setStyle({'popGesture':'none'});
+				// 侧滑返回后关闭webview
+				wv.setStyle({'popGesture':'close'});
+				// 侧滑返回后隐藏webview
+				//wv.setStyle({'popGesture':'hide'});
+			})
+</script>

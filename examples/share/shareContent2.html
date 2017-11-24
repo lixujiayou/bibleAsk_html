@@ -1,0 +1,627 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mx.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/list-to-detail.css" />
+		<style type="text/css">
+			#sharecontent {
+				width: 80%;
+				-webkit-user-select: text;
+				border: 1px solid #6C6C6C;
+				-webkit-border-radius: 2px;
+				border-radius: 2px;
+			}
+			.sharehref {
+				width: 80%;
+				-webkit-user-select: text;
+				border: 1px solid #6C6C6C;
+				-webkit-border-radius: 2px;
+				border-radius: 2px;
+				margin-bottom: .5em;
+			}
+			
+			
+		</style>
+		<style type="text/css">
+			div.double {
+				border-style: outset;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/html2canvas.js"></script>
+		<script src="../../js/Canvas2Image.js"></script>
+		<script src="../../js/vue.min.js"></script>
+		<script src="../../js/jquery-2.1.0.js"></script>
+		<!--<script src="com"></script>-->
+		<script type="text/javascript">
+		</script>
+
+		<div id="page" class="mui-content">
+			<div  id="line_top" class="mui-content"  style=" display: none; padding-top: 0px; margin-top: 0px;">
+				<div id="line_hint" style="display: none;">
+					<p style=" padding-left: 10px; padding-right: 10px; font-size: 12px;">......<br />非常抱歉,由于文章较长,图片长度上限,给您带来的不便请谅解.<br />阅读全文请下载'圣经问答App'.</p>
+				</div>
+				<hr id="line_gone" style=" border : 1px dashed #666666;" />
+				<div id="view_gone" style=" padding-left: 10px; padding-right: 10px; padding-bottom: 16px;">
+					<img src="../../images/ic_launcher.png" />
+					<p style="display: inline;position: absolute; margin-left: 10px;">圣经问答<br />扎根于圣经，建基于祷告。</p>
+				</div>
+			</div>
+
+			<!--顶部banner图 开始-->
+			<div id="kr-article-banner" style="display: block;" class="kr-article-banner">
+				<div id="kr-article-cover" class="kr-article-cover">
+					<img :src="cover">
+				</div>
+				<h2 id="kr-article-title" class="kr-article-title">{{title}}</h2>
+			</div>
+			<!--顶部banner图 结束-->
+
+			<div class="kr-article-content">
+
+				<!-- 文章作者、发布时间等信息 -->
+				<div class="kr-article-meta">
+					<!--<div id="kr-article-author" class="kr-article-author">{{author}}</div>
+					<div class="kr-article-text">发表于</div>
+					<div id="kr-article-time" class="kr-article-time">{{time}}</div>-->
+				</div>
+				<!--文章详细内容-->
+				<div id="kr-article-article" class="kr-article-article" v-html="content"></div>
+			</div>
+				
+				
+			<div id="line_bottome" class="mui-content"  style=" display: none; padding-top: 0px; margin-top: 0px;">
+				<hr id="line_gone" style=" border : 1px dashed #666666;" />
+				<div id="view_gone" style=" padding-left: 10px; padding-right: 10px; padding-bottom: 16px;">
+					<img src="../../images/ic_launcher.png" />
+					<p style="display: inline;position: absolute; margin-left: 10px;">圣经问答<br />扎根于圣经，建基于祷告。</p>
+				</div>
+			</div>
+		</div>
+		<img class="m-tab" id="img_test" src="../../images/icon_share_go.png" />
+	</body>
+</html>
+
+<script type="text/javascript ">
+	mui.init();
+	var img;
+	var shares = null;
+	var pic; //图片地址
+	var lineGone;
+	var viewGone;
+	var lineHint;
+	var lineBottome;
+
+	function getDefaultData() {
+		return {
+			cover: '',
+			title: '',
+			author: '',
+			time: '',
+			content: ''
+		}
+	}
+
+	var vm = new Vue({
+		el: '.mui-content',
+		data: getDefaultData(),
+		methods: {
+			resetData: function() { //重置数据
+				//	Object.assign(this.$data, getDefaultData());
+			}
+		}
+	});
+	//监听自定义事件，获取新闻详情
+	document.addEventListener('get_detail', function(event) {
+		var guid = event.detail.guid;
+		if(!guid) {
+			return;
+		}
+		//前页传入的数据，直接渲染，无需等待ajax请求详情后
+		vm.cover = event.detail.cover;
+		vm.title = event.detail.title;
+		vm.author = event.detail.author;
+		vm.time = event.detail.time;
+		vm.content = event.detail.htmlText;
+	});
+
+	mui.plusReady(function() {
+		img1 = document.getElementById("img_test");
+		lineGone = document.getElementById("line_gone");
+		viewGone = document.getElementById("view_gone");
+		lineHint = document.getElementById("line_hint");
+		lineBottome = document.getElementById("line_bottome");
+
+		updateSerivces();
+		img1.addEventListener("tap", function() {
+			//main.init();
+			shareShow();
+		});
+	})
+
+	//压缩图片
+	function compressImage(path1, sb, bh) {
+		//var hb_path = '_downloads/image/compressImage.jpg'; //HBuilder平台路径
+		//	var sd_path = plus.io.convertLocalFileSystemURL(hb_path); //SD卡绝对路径
+		plus.zip.compressImage({
+				src: path1,
+				dst: path1,
+				overwrite: true,
+				quality: 20
+			},
+			function() {
+				plus.nativeUI.closeWaiting();
+				shareAction(sb, bh);
+				//var target = event.target; // 压缩转换后的图片url路径，以"file://"开头
+				//var size = event.size; // 压缩转换后图片的大小，单位为字节（Byte）
+			},
+			function(error) {
+				plus.nativeUI.closeWaiting();
+				console.log(error.code + "Compress error!" + error.message);
+				alert(error.code + "Compress error!" + error.message);
+			});
+	}
+
+	function getBase64Image(img) {
+		console.log("开始base64");
+		var canvas = document.createElement("canvas");
+		canvas.width = img.width;
+		canvas.height = img.height;
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0, img.width, img.height);
+		var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+		var dataURL = canvas.toDataURL("image/" + ext);
+		console.log("结束生成base64");
+		return dataURL;
+	}
+
+	function creatImg(sb, bh) {
+		plus.nativeUI.showWaiting("正在转化图片格式...");
+
+		lineGone.style.display = "block";
+		viewGone.style.display = "block";
+
+		var imgs = $("img");
+		console.log("11111111==" + imgs.length);
+		for(var i = 0; i < imgs.length - 1; i++) {
+			var base64 = getBase64Image(imgs[i]);
+			$("img")[i].src = base64;
+			if(i == imgs.length - 2) {
+				var shareContent = document.getElementById("page"); //需要截图的包裹的（原生的）DOM 对象
+				var width = shareContent.offsetWidth; //获取dom 宽度
+				var height = shareContent.offsetHeight; //获取dom 高度
+				var canvas = document.createElement("canvas"); //创建一个canvas节点
+				var scale = 2; //定义任意放大倍数 支持小数 
+				canvas.width = width * scale; //定义canvas 宽度 * 缩放
+				canvas.height = height * scale; //定义canvas高度 *缩放经测试  安卓后面加1000 ios不变
+				canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
+				var opts = {
+					scale: scale, // 添加的scale 参数
+					canvas: canvas, //自定义 canvas
+					logging: false, //日志开关
+					width: width, //dom 原始宽度
+					height: height //dom 原始高度 	 
+				};
+				console.log("3333333");
+				html2canvas(shareContent, opts).then(function(canvas) {
+					console.log("444444444");
+					//	console.log("244444444"+canvas.attr('src'));
+					//	document.body.appendChild(canvas);
+					console.log("5--");
+					//	var img = Canvas2Image.convertToImage(canvas, canvas.width, canvas.height);
+					//	var immm = Canvas2Image.saveAsBMP(canvas, true);
+
+					//	return; 
+
+					var bitmap = new plus.nativeObj.Bitmap();
+					bitmap.loadBase64Data(canvas.toDataURL(), function() {
+						console.log("加载Base64图片数据成功");
+						bitmap.save("_doc/a.jpg", {
+							overwrite: true
+						}, function(i) {
+
+							var imgtest = JSON.parse(JSON.stringify(i)).target;
+							console.log('保存图片成功');
+							pic = imgtest;
+							compressImage(imgtest, sb, bh);
+						}, function(e) {
+							plus.nativeUI.closeWaiting();
+							console.log('保存图片失败：' + JSON.stringify(e));
+						});
+					}, function() {
+						plus.nativeUI.closeWaiting();
+						//console.log('加载Base64图片数据失败：' + JSON.stringify(e));
+					});
+
+				});
+
+			}
+		}
+
+	}
+
+	function convertCanvasToImage(canvas) {
+		var image = new Image();
+		image.src = canvas.toDataURL("image/png");
+		return image;
+	}
+	/** 
+	 * 更新分享服务
+	 */
+	function updateSerivces() {
+		plus.share.getServices(function(s) {
+			shares = {};
+			for(var i in s) {
+				var t = s[i];
+				shares[t.id] = t;
+			}
+		}, function(e) {
+			outSet('获取分享服务列表失败：' + e.message);
+		});
+	}
+
+	// 打开分享
+	function shareShow() {
+		var shareBts = [];
+		// 更新分享列表
+		var ss = shares['weixin'];
+		if(navigator.userAgent.indexOf('qihoo') < 0) { //在360流应用中微信不支持分享图片
+			ss && ss.nativeClient && (shareBts.push({
+					title: '微信朋友圈',
+					s: ss,
+					x: 'WXSceneTimeline'
+				}),
+				shareBts.push({
+					title: '微信好友',
+					s: ss,
+					x: 'WXSceneSession'
+				}));
+		}
+//		ss = shares['sinaweibo'];
+//		ss && shareBts.push({
+//			title: '新浪微博',
+//			s: ss
+//		});
+		//		ss = shares['qq'];
+		//		ss && ss.nativeClient && shareBts.push({
+		//			title: 'QQ',
+		//			s: ss
+		//		});
+		// 弹出分享列表
+		shareBts.length > 0 ? plus.nativeUI.actionSheet({
+			title: '分享',
+			cancel: '取消',
+			buttons: shareBts
+		}, function(e) {
+			(e.index > 0) && main.init(shareBts[e.index - 1], false);
+		}) : plus.nativeUI.alert('当前环境无法支持分享操作!');
+	}
+
+	/**
+	 * 分享操作
+	 * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
+	 * @param {Boolean} bh 是否分享链接
+	 */
+	function shareAction(sb, bh) {
+		bh = false;
+		console.log("=====分享操作");
+		if(!sb || !sb.s) {
+			console.log("=====无效的分享服务！");
+			return;
+		}
+		var msg = {
+			content: "sharecontent.value",
+			extra: {
+				scene: sb.x
+			}
+		};
+		if(bh) {
+			msg.href = sharehref.value;
+			if(sharehrefTitle && sharehrefTitle.value != '') {
+				msg.title = sharehrefTitle.value;
+			}
+			if(sharehrefDes && sharehrefDes.value != '') {
+				msg.content = sharehrefDes.value;
+			}
+			msg.thumbs = ['_www/logo.png'];
+			msg.pictures = ['_www/logo.png'];
+		} else {
+			console.log("pic====" + pic);
+			//			if(pic && pic.realUrl) {
+			//				console.log("pic====" + pic);
+			//				console.log("pic.realUrl====" + pic.realUrl);
+			//				msg.pictures = [pic.realUrl];
+			//			}
+			msg.pictures = [pic];
+		}
+		// 发送分享
+		if(sb.s.authenticated) {
+			//console.log("=====已授权！");
+			shareMessage(msg, sb.s);
+		} else {
+			//console.log("=====未授权！");
+			sb.s.authorize(function() {
+				shareMessage(msg, sb.s);
+			}, function(e) {
+			//	console.log('认证授权失败：' + e.code + ' - ' + e.message);
+			});
+		}
+	}
+	/**
+	 * 发送分享消息
+	 * @param {JSON} msg
+	 * @param {plus.share.ShareService} s
+	 */
+	function shareMessage(msg, s) {
+	//	console.log(JSON.stringify(msg));
+		s.send(msg, function() {
+			console.log('分享到"' + s.description + '"成功！');
+		}, function(e) {
+			console.log('分享到"' + s.description + '"失败: ' + JSON.stringify(e));
+		});
+	}
+
+	//重写返回逻辑
+	mui.back = function() {
+		plus.webview.currentWebview().hide("auto", 300);
+		//动画结束后，恢复默认值
+		setTimeout(function() {
+			window.scrollTo(0, 0);
+			vm.resetData();
+		}, 300);
+	}
+
+	//	 //定义查找元素方法
+	//  function $(selector) {
+	//      return document.querySelector(selector);
+	//  }
+//	var main = {
+//		init: function() {
+//			main.setListener();
+//		},
+//		//设置监听事件
+//		setListener: function() {
+//			//  var btnShare = document.getElementById("btnShare");
+//			//  btnShare.onclick = function(){
+//			main.html2Canvas();
+//			//  }
+//		},
+//		//获取像素密度
+//		getPixelRatio: function(context) {
+//			var backingStore = context.backingStorePixelRatio ||
+//				context.webkitBackingStorePixelRatio ||
+//				context.mozBackingStorePixelRatio ||
+//				context.msBackingStorePixelRatio ||
+//				context.oBackingStorePixelRatio ||
+//				context.backingStorePixelRatio || 1;
+//			return(window.devicePixelRatio || 1) / backingStore;
+//		},
+//		//绘制dom 元素，生成截图canvas
+//		html2Canvas: function() {
+//			plus.nativeUI.showWaiting("正在制作分享图片,请耐心等待...");
+//			var shareContent = document.getElementById("page");
+//			//      var shareContent = $("#page");// 需要绘制的部分的 (原生）dom 对象 ，注意容器的宽度不要使用百分比，使用固定宽度，避免缩放问题
+//			var width = shareContent.offsetWidth; // 获取(原生）dom 宽度
+//			var height = shareContent.offsetHeight; // 获取(原生）dom 高
+//			var offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
+//			var canvas = document.createElement('canvas'); //创建canvas 对象
+//			var context = canvas.getContext('2d');
+//			var scaleBy = main.getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+//			//    scaleBy = 1;
+//			canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+//			canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+//			context.scale(scaleBy, scaleBy);
+//
+//			console.log("====scaleBy" + scaleBy);
+//			var opts = {
+//				allowTaint: true, //允许加载跨域的图片 
+//				tainttest: true, //检测每张图片都已经加载完成
+//				scale: 2, // 添加的scale 参数
+//				canvas: canvas, //自定义 canvas 
+//				logging: true, //日志开关，发布的时候记得改成false
+//				width: width, //dom 原始宽度
+//				height: height //dom 原始高度
+//			};
+//			html2canvas(shareContent, opts).then(function(canvas) {
+//				console.log("html2canvas");
+//				var body = document.getElementsByTagName("body");
+//				body[0].appendChild(canvas);
+//			});
+//		}
+//	};
+var isHeight = false;
+	var main = {
+		init: function(sb, bh) {
+			main.setListener(sb, bh);
+		},
+		//设置监听事件
+		setListener: function(sb, bh) {
+			main.html2Canvas(sb, bh);
+		},
+		//获取像素密度
+		getPixelRatio: function(context) {
+			var backingStore = context.backingStorePixelRatio ||
+				context.webkitBackingStorePixelRatio ||
+				context.mozBackingStorePixelRatio ||
+				context.msBackingStorePixelRatio ||
+				context.oBackingStorePixelRatio ||
+				context.backingStorePixelRatio || 1;
+			return(window.devicePixelRatio || 1) / backingStore;
+		},
+		//绘制dom 元素，生成截图canvas
+		html2Canvas: function(sb, bh) {
+			plus.nativeUI.showWaiting("正在发起分享...");
+			var shareContent = document.getElementById("page");
+			var width = shareContent.offsetWidth; // 获取(原生）dom 宽度
+			var height = shareContent.offsetHeight; // 获取(原生）dom 高
+			var offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
+			var canvas = document.createElement('canvas'); //创建canvas 对象
+			var context = canvas.getContext('2d');
+			var scaleBy = main.getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+			scaleBy = 2;
+			canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+			canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+
+			console.log("====scaleBy1== " + canvas.width);
+			console.log("====scaleBy1== " + canvas.height);
+			if(canvas.height > 8000) {
+				lineHint.style.display = "block";
+				canvas.height = 8000;
+				isHeight = true;
+			}else{
+				lineBottome.style.display = "block";
+				isHeight = false;
+				
+			width = shareContent.offsetWidth; // 获取(原生）dom 宽度
+			 height = shareContent.offsetHeight; // 获取(原生）dom 高
+			 offsetTop = shareContent.offsetTop; //元素距离顶部的偏移量
+			 canvas = document.createElement('canvas'); //创建canvas 对象
+			 context = canvas.getContext('2d');
+			 scaleBy = main.getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+			scaleBy = 2;
+			canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+			canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+
+			}
+
+			console.log("====scaleBy2== " + canvas.width);
+			console.log("====scaleBy2== " + canvas.height);
+
+			context.scale(scaleBy, scaleBy);
+			var opts = { 
+				allowTaint: true, //允许加载跨域的图片 
+				tainttest: true, //检测每张图片都已经加载完成
+				scale: scaleBy, // 添加的scale 参数
+				canvas: canvas, //自定义 canvas  
+				logging: false, //日志开关，发布的时候记得改成false
+				width: width, //dom 原始宽度
+				height: height //dom 原始高度
+			};
+			html2canvas(shareContent, opts).then(function(canvas) {
+				console.log("html2canvas");
+				//var body = document.getElementsByTagName("body");
+				// body[0].appendChild(canvas);
+				
+					//var body = document.getElementsByTagName("body");
+					//body[0].appendChild(canvas); 
+					if(isHeight == false){
+						lineBottome.style.display = "none";
+						var bitmap = new plus.nativeObj.Bitmap();
+							console.log("55555555");
+							bitmap.loadBase64Data(canvas.toDataURL(), function() {
+								console.log("加载Base64图片数据成功");
+								bitmap.save("_doc/a.jpg", {
+									overwrite: true
+								}, function(i) {
+									console.log('保存图片成功');
+									var imgtest = JSON.parse(JSON.stringify(i)).target;
+									pic = imgtest;
+									compressImage(imgtest, sb, bh);
+								}, function(e) {
+									plus.nativeUI.closeWaiting();
+									console.log('保存图片失败：' + JSON.stringify(e));
+								});
+							}, function() {
+								plus.nativeUI.closeWaiting();
+								console.log('加载Base64图片数据失败：' + JSON.stringify(e));
+							});
+					}else{
+						main2.init(canvas,sb, bh);
+					}
+					
+					
+				
+			});
+		}
+	};
+
+	var main2 = {
+			init: function(canvasMy,sb, bh) {
+				main2.setListener(canvasMy,sb, bh);
+			},
+			//设置监听事件
+			setListener: function(canvasMy,sb, bh) {
+				main2.html2Canvas(canvasMy,sb, bh);
+			},
+			//获取像素密度
+			getPixelRatio: function(context) {
+				var backingStore = context.backingStorePixelRatio ||
+					context.webkitBackingStorePixelRatio ||
+					context.mozBackingStorePixelRatio ||
+					context.msBackingStorePixelRatio ||
+					context.oBackingStorePixelRatio ||
+					context.backingStorePixelRatio || 1;
+				return(window.devicePixelRatio || 1) / backingStore;
+			},
+			//绘制dom 元素，生成截图canvas 
+			html2Canvas: function(canvasMy,sb, bh) {
+					var shareContent1 = document.getElementById("line_top");
+					shareContent1.style.display = "block";
+					var width = shareContent1.offsetWidth; // 获取(原生）dom 宽度
+					var height = shareContent1.offsetHeight; // 获取(原生）dom 高
+					//    var offsetTop = shareContent1.offsetTop;  //元素距离顶部的偏移量
+					var canvas = document.createElement('canvas'); //创建canvas 对象
+					var context = canvas.getContext('2d');
+					var scaleBy = main.getPixelRatio(context); //获取像素密度的方法 (也可以采用自定义缩放比例)
+					scaleBy = 2;
+					canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+					// canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+					canvas.height = height * scaleBy;
+
+					console.log("====scaleBy2== " + canvas.width);
+					console.log("====scaleBy2== " + canvas.height);
+
+					context.scale(scaleBy, scaleBy);
+					var opts = {
+						allowTaint: true, //允许加载跨域的图片 
+						tainttest: true, //检测每张图片都已经加载完成
+						scale: scaleBy, // 添加的scale 参数 
+						canvas: canvas, //自定义 canvas 
+						logging: false, //日志开关，发布的时候记得改成false
+						width: width, //dom 原始宽度
+						height: height //dom 原始高度
+					};
+					
+					html2canvas(shareContent1, opts).then(function(canvas) {
+							shareContent1.style.display = "none";
+							lineHint.style.display = "none";
+							var ctx = canvasMy.getContext("2d");
+							ctx.drawImage(canvas, 0, canvasMy.height / 2 - canvas.height / 2, canvas.width / 2, canvas.height / 2);
+
+							//       	var body = document.getElementsByTagName("body");
+							//            body[0].appendChild(canvasMy); 
+							//          }); 
+
+							var bitmap = new plus.nativeObj.Bitmap();
+							console.log("55555555");
+							bitmap.loadBase64Data(canvasMy.toDataURL(), function() {
+								console.log("加载Base64图片数据成功");
+								bitmap.save("_doc/a.jpg", {
+									overwrite: true
+								}, function(i) {
+									console.log('保存图片成功');
+									var imgtest = JSON.parse(JSON.stringify(i)).target;
+									pic = imgtest;
+									compressImage(imgtest, sb, bh);
+								}, function(e) {
+									plus.nativeUI.closeWaiting();
+									console.log('保存图片失败：' + JSON.stringify(e));
+								});
+							}, function() {
+								plus.nativeUI.closeWaiting();
+								console.log('加载Base64图片数据失败：' + JSON.stringify(e));
+							});
+							
+							});
+							
+						}
+					};
+</script>

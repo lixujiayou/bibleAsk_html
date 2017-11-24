@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mx.css"/>
+		
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/immersed2.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">答题需知</h1>
+		</header>
+		
+		
+		<div class="mui-content" style="margin-top: 10px; padding-left: 6px;padding-right: 6px;">
+		   
+			<p>答题分为圣经、摩西五经、大小先知书、历史诗歌书、四福音、新约书信六大类。</p>
+		    <p>规则：</P>
+		    	
+		    <p style="color: black; font-size: 14px;">1、每次答题共有15道，答对一题加100分，连续答对第二题加200分，依次；</p>
+		    <p style="color: black; font-size: 14px;">2、答错一题减90分，连续答错第二题减180分并结算成绩答题结束；</p>
+		    <p style="color: black; font-size: 14px;">3、跳过一题减50分。</p>
+		    <p style="color: black; font-size: 14px;">暂停：暂不提供直接暂停功能；选择答案并点击确定后系统不会计时，可视为暂停</p>
+		     <p style="color: black; font-size: 14px;">时间：每道题有25秒的时间，若超出该时间，则结算并退出本次答题。</p>
+		    <p>锦囊：</p>
+		   <p style="color: black; font-size: 14px;">1、暂停求助*1（可将答题分享到微信或朋友圈，计时暂停，返回后继续计时）；</p>
+		    	<p style="color: black; font-size: 14px;">2、去掉两个错误答案*1，，每次答题后初始化。</p>
+		   <p>称号：</p>
+		     <p style="color: black; font-size: 14px;">≥9600      在路上</p>
+		     <p style="color: black; font-size: 14px;">≥7600 ＆ ＜9600  摸爬滚打</p>
+		     <p style="color: black; font-size: 14px;">≥3600 ＆ ＜7600  跌跌撞撞</p>
+		     <p style="color: black; font-size: 14px;">≥2000 ＆ ＜3600  还差一点</p>
+		     <p style="color: black; font-size: 14px;">＜2000       云里雾里</p>
+		   
+		    <p> 分享:</p>
+		     <p style="color: black; font-size: 14px;">不定期更新分享内容。</p>
+		     <p style="color: black; font-size: 14px;">欢迎弟兄姊妹投稿，可发至邮箱bibleAsk@163.com，并注明出处。"</p>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	mui.plusReady(function(){
+				var wv=plus.webview.currentWebview();
+				// 关闭侧滑返回功能
+				//wv.setStyle({'popGesture':'none'});
+				// 侧滑返回后关闭webview
+				wv.setStyle({'popGesture':'close'});
+				// 侧滑返回后隐藏webview
+				//wv.setStyle({'popGesture':'hide'});
+			})
+</script>

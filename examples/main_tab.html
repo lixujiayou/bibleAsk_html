@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<!--<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">-->
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/mx.css"/>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/bmob-min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div style="position: absolute; width: 100%; height: 100%; background: white;"></div>
+
+		<!--<header class="mui-barmui-bar-nav">
+		    <h1 id="title" class="mui-title">答题</h1>
+		</header> -->
+
+	
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="askSub.html">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">答题</span>
+			</a>
+			<a class="mui-tab-item" href="shareSub.html">
+				<span class="mui-icon mui-icon-star"></span>
+				<span class="mui-tab-label">分享</span>
+			</a>
+			<!--<a class="mui-tab-item" href="mineSub.html">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>-->
+		</nav>
+
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	Bmob.initialize("21bfb1f1037b3963aaa2fe01bee1bc68", "2ad5eef1e9db172e8448216b0f16a5b8");
+	var subPageNums = ['0', '0', '0'];
+	var subPages = ["askSub.html", "shareSub.html", "mineSub.html"];
+	var subPageStyle = {
+		top:'0px', 
+		bottom: '50px'
+	}
+	var self;
+	var sub1;
+	var sub2;
+	var sub3;
+	//	top:'44px', 
+	mui.plusReady(function() {
+		self = plus.webview.currentWebview();
+
+		sub1 = plus.webview.create(subPages[0], subPages[0], subPageStyle);
+		sub1.hide();
+		self.append(sub1);
+		subPageNums[0] = '1';
+		plus.webview.show(sub1, "fade-in", 100);
+
+	})
+	//	var titleBar = document.getElementById("title");
+	mui(".mui-bar-tab").on("tap", "a", function(e) {
+		var tagPage = this.getAttribute("href");
+		
+		if(tagPage == subPages[0]) {
+			
+			plus.webview.show(sub1, "fade-in", 100);
+			changePage(0); 
+		} else if(tagPage == subPages[1]) {
+			
+			if(subPageNums[1] == '0') {
+				sub2 = plus.webview.create(subPages[1], subPages[1], subPageStyle);
+				self.append(sub2);
+				subPageNums[1] = '1';
+			}
+			plus.webview.show(sub2, "fade-in", 100);
+			changePage(1);
+ 
+		} else {
+			
+			if(subPageNums[2] == '0') {
+				sub3 = plus.webview.create(subPages[2], subPages[2], subPageStyle);
+				self.append(sub3);
+				subPageNums[2] = '1'; 
+			}
+			plus.webview.show(sub3, "fade-in", 100);
+			changePage(2);
+		}
+	})
+
+	function changePage(pageNum) {
+		if(pageNum == 0) {
+
+			if(sub2 != null) {
+				sub2.hide();
+			}
+
+			if(sub3 != null) {
+				sub3.hide();
+			}
+
+		} else if(pageNum == 1) {
+
+			if(sub1 != null) {
+				sub1.hide();
+			}
+
+			if(sub3 != null) {
+				sub3.hide();
+			}
+		} else {
+
+			if(sub2 != null) {
+				sub2.hide();
+			}
+			if(sub1 != null) {
+				sub1.hide();
+			}
+
+		}
+	}
+</script>

@@ -1,0 +1,321 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/list-to-detail.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mx.css"/>
+		<style type="text/css">
+			
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/bmob-min.js"></script>
+		<script src="../js/immersed.js"></script>
+		<script type="text/javascript">
+			Bmob.initialize("21bfb1f1037b3963aaa2fe01bee1bc68", "2ad5eef1e9db172e8448216b0f16a5b8");
+		</script>
+
+		<div class="mui-content">
+			<div id="kr-article-banner" style="display: block;" class="kr-article-banner">
+				<div id="kr-article-cover" class="kr-article-cover">
+					<img id="title_img" src="../images/yuantiao.jpg">
+				</div>
+				<!--				<h2 id="kr-article-title" class="kr-article-title">贾师傅卡死健康萨芬哈佛</h2>
+-->
+			</div>
+			<!--			<img id="title_img" src="../images/img_huoer.jpg" style="background-position: inherit; max-height: 180px; width: 100%; " />
+-->
+			<ul id="bt_content" class="mui-table-view mui-row effect" style="margin-top: 10px; padding-left: 10px; padding-right: 10px;padding-top: 10px;">
+				<div class="mui-media-body">
+					<p id="title_content">敬畏耶和华是智慧的开端，认识至圣者便是聪明.【箴9：10】</p>
+					<p id="title_time" class="mui-pull-right"></p>
+				</div>
+			</ul>
+
+			<p style="border : 1px dashed #EBEBF2;background-color: white; " />
+
+			<ul class="mui-table-view mui-row  mui-bar-tab" style="margin-top: -10px; padding-top: 14px;padding-bottom: 14px;">
+
+				<div id="bt_rule" class="mui-tab-item effect" style="height: auto; width: 100%;">
+				
+					<img class="mui-icon mui-icon-home" src="../images/icon_m_rule.png" style="height: auto; width: auto;"></img>
+					<span class="mui-tab-label" style="font-size: 15px; color: black;">答题需知</span>
+				
+				</div>
+				<div id="bt_feedback" class="mui-tab-item effect" style="width: 100%;">
+					<img class="mui-icon" src="../images/icon_m_idea.png" style="height: auto; width: auto;"></img>
+					<span class="mui-tab-label" style="font-size: 15px; color: black;">反馈建议</span>
+				</div>
+				<div id="bt_about" class="mui-tab-item effect" style="width: 100%;height: auto;">
+					<img class="mui-icon" src="../images/icon_m_about.png" style="height: auto; width: auto;"></img>
+					<span class="mui-tab-label" style="font-size: 15px; color: black;">关于我们</span>
+				</div>
+			</ul>
+
+			<ul id="bt_ask" class="mui-table-view mui-row  mui-bar-tab effectTran" style="margin-top: 10px; padding: 6px;padding-top: 14px;padding-bottom: 14px;">
+				<div class="mui-tab-item" style="width: 100%;">
+					<img class="mui-icon" src="../images/icon_m_answer.png" style="height: auto; width: auto;"></img>
+					<span class="mui-tab-label" style="font-size: 15px; color: black;">开始答题</span>
+				</div>
+			</ul>
+
+		</div>
+		
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	var lastId = ''; //最新新闻的id
+	var webview_detail = null; //详情页webview
+	var titleNView = { //详情页原生导航配置
+		backgroundColor: '#f7f7f7', //导航栏背景色
+		titleText: '', //导航栏标题
+		titleColor: '#000000', //文字颜色
+		type: 'transparent', //透明渐变样式
+		autoBackButton: true, //自动绘制返回箭头
+		autoMenuButton: true,
+		splitLine: { //底部分割线
+			//			color: '#cccccc'
+		}
+	}
+	var coverImgUrl;
+	var coverTitle;
+	var coverHtmlText;
+
+	var timeText;
+	var titleContent;
+	var titleImage;
+
+	var btContent;
+	var btAsk;
+	var btFeedback;
+	var btOnline;
+	var btTime;
+	var btHelp;
+	var btRule;
+	var btAbout;
+	mui.plusReady(function() {
+		plus.webview.currentWebview().setStyle({
+			//statusbar:{background:'transparent'},
+			top: 0
+		});
+		titleImage = document.getElementById("title_img");
+		timeText = document.getElementById("title_time");
+		titleContent = document.getElementById("title_content");
+		btAsk = document.getElementById("bt_ask");
+		btOnline = document.getElementById("bt_online");
+		btTime = document.getElementById("bt_time");
+		btHelp = document.getElementById("bt_help");
+		btContent = document.getElementById("bt_content");
+		btFeedback = document.getElementById("bt_feedback");
+		btRule = document.getElementById("bt_rule");
+		btAbout = document.getElementById("bt_about");
+
+		initTap();
+		getCurDate();
+		getScriptures();
+		//预加载详情页
+		webview_detail = mui.preload({
+			url: 'share/shareContent2.html',
+			id: 'share/shareContent2.html',
+			styles: {
+				"render": "always",
+				"popGesture": "hide",
+				"bounce": "vertical",
+				"bounceBackground": "#efeff4",
+				"titleNView": titleNView
+			}
+		});
+		//预加载反馈建议
+		webview_feedback = mui.preload({
+			url: 'ask/feedback.html',
+			id: 'ask/feedback.html',
+			//			styles: {
+			//				"render": "always",
+			//				"popGesture": "hide",
+			//				"bounce": "vertical",
+			//				"bounceBackground": "#efeff4",
+			//				"titleNView": titleNView
+			//			}
+		});
+
+	})
+
+	function initTap() {
+		btAsk.addEventListener('tap', function() {
+			//	mui.openWindow("ask/askIng.html");
+			mui.openWindow("ask/askIng.html");
+		});
+		btFeedback.addEventListener("tap", function() {
+			mui.openWindow('ask/feedback.html');
+			//	open_feedback();
+		});
+		btRule.addEventListener("tap",function(){
+			mui.openWindow("ask/rule.html");
+		});
+		btAbout.addEventListener("tap",function(){
+			mui.openWindow('ask/aboutWe.html');
+		});
+
+		btContent.addEventListener("click", function() {
+			if(typeof(coverHtmlText) != "undefined" && coverHtmlText != null) {
+				open_detail("5101871", coverTitle, "标题", "20170101", coverImgUrl, coverHtmlText);
+			}
+		});
+		titleImage.addEventListener("click", function() {
+			if(typeof(coverHtmlText) != "undefined" && coverHtmlText != null) {
+				open_detail("5101871", coverTitle, "标题", "20170101", coverImgUrl, coverHtmlText);
+			}
+		});
+	}
+
+	function getScriptures() {
+		var Scriptures = Bmob.Object.extend("Scriptures");
+		var query = new Bmob.Query(Scriptures);
+		query.limit(1);
+		query.descending("createdAt");
+		query.find({
+			success: function(results) {
+				if(typeof(results) == "undefined") {
+
+				} else {
+					var content = results[0].get("sContent");
+					var img = results[0].get("sImage");
+					titleContent.innerText = content;
+					if(typeof(img) != "undefined") {
+						console.log("图片" + img._url);
+						//	titleImage.src = img._url;
+					}
+				}
+			}
+		});
+
+		var share = Bmob.Object.extend("Share");
+		var queryShare = new Bmob.Query(share);
+		queryShare.limit(1);
+		//	queryShare.descending("createdAt");
+		queryShare.equalTo("isCover", "Y");
+		queryShare.find({
+			success: function(results) {
+				if(typeof(results) != "undefined") {
+					for(var i = 0; i < 1; i++) {
+						var share1 = results[i];
+						var shareTitle = share1.get('title');
+						var isCover = share1.get('isCover');
+						var htmlText = share1.get('htmlText');
+						coverHtmlText = htmlText;
+						coverTitle = shareTitle;
+						var shareImage = share1.get('pics'); //数组
+						var url;
+						if(shareImage != "undefined" && shareImage != "null") {
+							for(var ii = 0; ii < 1; ii++) {
+								var urlbean = shareImage[ii];
+								url = urlbean._url.substr(20, urlbean._url.length);
+							}
+							coverImgUrl = url;
+							titleImage.src = url;
+						}
+					}
+				}
+			}
+		});
+
+	}
+
+	/**
+	 *打开反馈建议 
+	 */
+	function open_feedback() {
+		//若反馈建议页尚未预加载完成，则延时等待再执行
+		if(!webview_feedback) {
+			setTimeout(function() {
+				open_feedback();
+			}, 100);
+		}
+		setTimeout(function() {
+			webview_feedback.show("slide-in-right", 300);
+		}, 150);
+	}
+
+	/** 
+	 * 打开新闻详情
+	 * 
+	 * @param {String} guid 新闻ID 
+	 * @param {String} title  新闻标题
+	 */
+	function open_detail(guid, title, author, time, cover, htmlContent) {
+		//若详情页尚未预加载完成，则延时等待再执行
+		if(!webview_detail) {
+			setTimeout(function() {
+				open_detail(guid);
+			}, 100);
+		}
+		//触发子窗口变更新闻详情
+		mui.fire(webview_detail, 'get_detail', {
+			guid: guid,
+			title: title,
+			author: author,
+			time: time,
+			cover: cover,
+			htmlText: htmlContent
+		});
+
+		//更改详情页原生导航条信息
+		titleNView.titleText = title;
+		webview_detail.setStyle({
+			"titleNView": titleNView
+		});
+		setTimeout(function() {
+			webview_detail.show("slide-in-right", 300);
+		}, 150);
+	}
+
+	function getCurDate() {
+		var d = new Date();
+		var week;
+		switch(d.getDay()) {
+			case 1:
+				week = "星期一";
+				break;
+			case 2:
+				week = "星期二";
+				break;
+			case 3:
+				week = "星期三";
+				break;
+			case 4:
+				week = "星期四";
+				break;
+			case 5:
+				week = "星期五";
+				break;
+			case 6:
+				week = "星期六";
+				break;
+			default:
+				week = "礼拜天";
+		}
+		//		var years = d.getYear();//两位
+		var years = d.getFullYear(); //完整
+		var month = add_zero(d.getMonth() + 1);
+		var days = add_zero(d.getDate());
+		var hours = add_zero(d.getHours());
+		var minutes = add_zero(d.getMinutes());
+		var seconds = add_zero(d.getSeconds());
+		var ndate = years + "/" + month + "/" + days + "/" + week;
+		timeText.innerText = ndate;
+	}
+
+	function add_zero(temp) {
+		if(temp < 10) return "0" + temp;
+		else return temp;
+	}
+</script>
