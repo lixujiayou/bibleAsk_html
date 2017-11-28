@@ -32,7 +32,7 @@
 			
 			.long-shadow,
 			.medium-shadow {
-				border: none;
+				border: none; 
 				-o-text-overflow: clip;
 				text-overflow: clip;
 			}
@@ -59,6 +59,41 @@
 			.text-danger {
 				color: #000000
 			}
+			h5 {
+				margin-bottom: 10px;
+				text-align: left;
+			}
+			
+			.mui-demo-container{
+				background-color: #fff;
+				padding: 10px 15px;
+			}
+			
+			.mui-btn-block{
+				padding: 5px 0;
+			}
+			
+			#demo5 .mui-progressbar{
+				margin: 15px 10px;
+			}
+			
+			.mui-progressbar-success span {
+				background-color: #4cd964;
+			}
+			.mui-progressbar-warning span {
+				background-color: #f0ad4e;
+			}
+			.mui-progressbar-danger span {
+				background-color: #dd524d;
+			}
+			.mui-progressbar-royal span {
+				background-color: #8a6de9;
+			}
+			
+			/*Android平台使用父子webview，因此需要修改顶部进度条的显示位置*/
+			.mui-plus.mui-android>.mui-progressbar{
+				top:0
+			}
 		</style>
 	</head>
 
@@ -83,17 +118,23 @@
 
 				<div class="mui-media-body" style="height: 10%; text-align: center;">
 					<p id="tv_score" class="mui-pull-left" style="color: white; font-size: 18px; margin-left: 10px;">0</p>
-						<p id="tv_hint" class="mui-pull-right" style="display: none; color: white; font-size: 11px;margin-right: 10px;">图片来自于圣经问答</p>
+						<p id="tv_hint" class="mui-pull-right" style="display: none; color: white; font-size: 11px;margin-right: 10px;">图片来自于圣经问答APP</p>
 				</div>
-
-				<p class="mui-progressbar mui-progressbar-success" style="height: 0.5%; background: white;" data-progress="20"><span></span></p>
-				<div class="mui-media-body" style=" min-height: 22%; padding:20px 4px; ">
-					<!--					<p id="tv_topic" class="contentMy" style="color: white; font-size: 18px;"></p>
--->
+					
+				<div  id="demo1" style="height: 0.5%;" class="mui-text-center">
+					<p class="mui-progressbar mui-progressbar-success" style=" background: white;" ><span></span></p>
+				</div>
+				
+			
+<!--				<p id="pb_all" class="mui-progressbar mui-progressbar-success" style="height: 0.5%; background: white;"  data-progress="20"><span></span></p>
+-->				<div class="mui-media-body" style=" min-height: 22%; padding:20px 4px; ">
+					<!--					<p id="tv_topic" class="contentMy" style="color: white; font-size: 18px;"></p>-->
 					<p id="tv_topic" class="contentMy" style="color: white; font-size: 18px;"></p>
-
 				</div>
-				<p class="mui-progressbar mui-progressbar-danger" style="height: 0.5%; background: white;" data-progress="50"><span></span></p>
+				
+				<div  id="pb_right" style="height: 2px;" class="mui-text-center">
+					<p class="mui-progressbar mui-progressbar-warning" style="height: 100%; background: white;" ><span></span></p>
+				</div>
 
 				<ul class="mui-table-view mui-grid-view mui-row" style="height: 34%; background: transparent; text-align: center;">
 					<li id="tv_a1" class="answer4 mui-table-view-cell mui-media mui-col-xs-6 effectTran" style="min-height: 50%; text-align: center;">
@@ -165,10 +206,10 @@
 	var mainbgm = "_www/audio/gaming.mp3"; //点击音效
 	var clickBgm = "_www/audio/click_sound.mp3"; //点击音效
 	var lianji1Bgm = "_www/audio/lianji101.mp3"; //答对一题
-	var lianji2Bgm = "_www/audio/lianji101.mp3"; //连续答对2题
-	var lianji3Bgm = "_www/audio/lianji101.mp3"; //连续答对3题
-	var lianji4Bgm = "_www/audio/lianji101.mp3"; //连续答对4题
-	var yesBgm = "_www/audio/lianji101.mp3"; //连续答对封顶
+	var lianji2Bgm = "_www/audio/lianji102.mp3"; //连续答对2题
+	var lianji3Bgm = "_www/audio/lianji103.mp3"; //连续答对3题
+	var lianji4Bgm = "_www/audio/lianji104.mp3"; //连续答对4题
+	var yesBgm = "_www/audio/congraduate_sound.mp3"; //连续答对封顶
 	var erroBgm = "_www/audio/timeover_.mp3"; //答错
 	var timeOverBgm = "_www/audio/timeover.mp3"; //倒计时10秒
 	var gameOverBgm = "_www/audio/jiesuan01.mp3"; //答题结束
@@ -190,6 +231,7 @@
 	//var currentAnswer;//当前题目的答案 
 	var currentNum = 0; //当前答题进度
 	var currentScore = 0; //当前得分
+	var rightAllNum = 0;//共答对个数
 	var xmldoc; //解析xml字段
 
 	var isRW; //记录本提选择的对错
@@ -215,7 +257,8 @@
 	
 	var tvCountNum;
 //	var lineBottome;
-	
+	var progressbarAll ;
+	var progressbarRight;
 	
 	//var btHelpShare;
 	mui.plusReady(function() {
@@ -230,17 +273,14 @@
 		});
 
 		mui('body').on('shown', '.mui-popover', function(e) {
-			//console.log('shown', e.detail.id);//detail为当前popover元素
 		});
 		mui('body').on('hidden', '.mui-popover', function(e) {
-			//console.log('hidden', e.detail.id);//detail为当前popover元素
 		});
 		var info = document.getElementById("info");
 		mui('body').on('tap', '.help', function() {
 			var a = this;
 			//关闭actionsheet
 			mui('#picture').popover('toggle');
-			console.log("=====" + a.id);
 			//info.innerHTML = "你刚点击了\"" + a.innerHTML + "\"按钮";
 			startMusic(clickBgm);
 		})
@@ -255,6 +295,9 @@
 		tvHint = document.getElementById("tv_hint");
 		dTitle = document.getElementById("dialog_title");
 		dContent = document.getElementById("dialog_content");
+		
+	//	pbAll = document.getElementById("pb_all");
+	//	pbRight = document.getElementById("pb_right");
 
 		tvTitle = document.getElementById("title_type");
 		btVolume = document.getElementById("bt_volume");
@@ -264,6 +307,10 @@
 		btHelpShare = document.getElementById("bt_help_share");
 	//	btHelpOut = document.getElementById("bt_help_out");
 
+		progressbarAll = mui('#demo1');
+		progressbarRight = mui('#pb_right');
+		//pbAll.setProgress(20);
+		
 		//initTextAnime(); 
 		updateSerivces();
 		initTap();
@@ -272,14 +319,14 @@
 	})
 
 	function initData() {
-		console.log(currentNum + "当前=====共" + everyNum);
+		
 		if(currentNum == everyNum) {
-			
 			//mui.toast("结束");
 			gameOverDialog();
 			return;
 		}
-
+		
+	   mui(progressbarAll).progressbar().setProgress(100/everyNum*(currentNum));
 		//tvSelect.textContent = "未选择";	
 		topicText.innerHTML = " " + questionList[currentNum];
 		//打乱选项
@@ -288,6 +335,7 @@
 		for(var i = 0; i < answerList.get(currentNum).length; i++) {
 			answerTest[i] = i + 1;
 		}
+		console.log("====正确答案="+answerList.get(currentNum)[0]);
 		var num;
 		for(var i = 0; i < answerList.get(currentNum).length; i++) {
 			do {
@@ -343,6 +391,7 @@
 		 */
 		btSkip.addEventListener("tap",function(){
 			startMusic(clickBgm);
+			startTimeOver(timeOverBgm,0); 
 			//连对清零
 			continuousRightNum = 0;
 			currentScore -= skipScore;
@@ -356,17 +405,15 @@
 		 */
 		mui('.mui-table-view').on("tap", "li", function(e) {
 			startMusic(clickBgm);
+			startTimeOver(timeOverBgm,0); 
+			startBgm(mainbgm,1)
 			var cID = this.getAttribute("id");
 			var text = document.getElementById(cID).textContent;
-			console.log("====" + text);
 			var cMy = text.substr(2, text.length).trim();
 			var cRight = answerList.get(currentNum)[0].trim();
 			if(isEmpty1(cMy) || cMy == '未选择') {
 				return;
 			}
-			console.log("正确答案=" + cRight);
-			console.log("我的选择=" + cMy);
-			console.log("我的选择=" + (cMy == cRight));
 			if(cMy == cRight) {
 				SuccessDialog();
 			} else {
@@ -399,17 +446,23 @@
 	 * 答对提示
 	 */
 	function SuccessDialog() {
+		rightAllNum += 1;
 		isPauseCountDown = true;
 		continuousRightNum += 1; //连续答对记录
 		continuousErrorsNum = 0;
 		currentScore += successScore * continuousRightNum;
+		
 		if(continuousRightNum == 1) {
+			console.log("连续答对1");
 			startMusic(lianji1Bgm);
 		} else if(continuousRightNum == 2) {
+			console.log("连续答对2");
 			startMusic(lianji2Bgm);
 		} else if(continuousRightNum == 3) {
+			console.log("连续答对3");
 			startMusic(lianji3Bgm);
 		} else if(continuousRightNum == 4) {
+			console.log("连续答对4");
 			startMusic(lianji4Bgm);
 		} else {
 			startMusic(yesBgm);
@@ -420,8 +473,9 @@
 			type: "success",
 			confirmButtonText: "下一题",
 			confirmButtonColor: "#AEDEF4"
-		}, function() {
-
+		}, function() { 
+			//mui(progressbarAll).progressbar().setProgress(100/everyNum*rightAllNum);
+			mui(progressbarRight).progressbar().setProgress(100/everyNum*rightAllNum);
 			tvScore.innerHTML = currentScore;
 			currentNum += 1;
 			initData();
@@ -541,13 +595,13 @@
 		startMusic(gameOverBgm);
 		var mDesignation;
 		
-		if(currentScore >= 9600){
+		if(currentScore >= 32500){
 			mDesignation = "在路上";
-		}else if(currentScore >= 7600 && currentScore < 9600){
+		}else if(currentScore >= 20000 && currentScore < 32500){
 			mDesignation = "摸爬滚打";
-		}else if(currentScore >= 3600 && currentScore < 7600){
+		}else if(currentScore >= 5000 && currentScore < 20000){
 			mDesignation = "跌跌撞撞";
-		}else if(currentScore >= 2000 && currentScore < 3600){
+		}else if(currentScore >= 1000 && currentScore < 5000){
 			mDesignation = "还差一点";
 		}else{
 			mDesignation = "云里雾里";
@@ -559,15 +613,31 @@
 		});
 	}
 	
-	
+	var isPlayCommon = true;
 	function countDown(){
 		if(isPauseCountDown == false){
-			if(countDownNum > 0){
+			if(countDownNum > 0){ 
+				if(countDownNum <= 10){
+					console.log("countDownNum <= 10");
+					if(isPlayCommon == true){
+						console.log("isPlayCommon == true");
+						startBgm(mainbgm,2); 
+						startTimeOver(timeOverBgm,1); 
+						isPlayCommon = false;
+					}
+				}
+				else{
+					isPlayCommon = true; 
+				}
 				countDownNum -= 1;
 				setTimeout(function(){
 					tvCountNum.innerText = countDownNum+"";
 					countDown();
 				},1000)
+				
+				
+				
+				
 			}else{
 				//本题时间结束  结算得分
 				gameOverDialog();
@@ -617,45 +687,70 @@
 	 * @param {Object} url 
 	 * @param {Object} type  0stop 1start 2pause 3resume
 	 */
+	var bgmStatus;
 	function startBgm(url, type) {
-	//	if(isVolume == true) {
+		if(isVolume == true) {
 			if(type == 1) {
 				if(bgm == null) {
 					bgm = plus.audio.createPlayer(url);
+					bgmStatus = "bStart";
 					bgm.play(function() {
+						bgm = null;
 						startBgm(mainbgm,1); 
 					}, function(e) { 
-						//console.log("=" + '播放音频文件"' + url + '"失败：' + e.message+"=="+e.code)
 						console.log("==="+e.toString());
 					});
-					console.log("音乐控制start");
 				} else {
-					bgm.resume();
+					if(bgmStatus == "bStart"){
+					}else{
+						bgm.resume();
+					}
 				}
 			} else if(type == 2) {
 				if(bgm != null) {
-					console.log("音乐控制pause");
+					bgmStatus = "bPause"; 
 					bgm.pause();
 				}
 			}else if(type == 3){
 				if(bgm != null) {
-					console.log("音乐控制resume");
+					bgmStatus = "bResume";
 					bgm.resume();
 				}
 			}else {
 				if(bgm != null) {
-					console.log("音乐控制stop");
+					bgmStatus = "bStop";
 					bgm.stop();
 				}
 			}
-	//	}
+		}
 	}
-
+	
+	/**
+	 * @param {Object} url
+	 * @param {Object} type 1:开始  0：stop
+	 */
+	var bgTimeOver;
+	function startTimeOver(url,type) {
+		if(isVolume == true){
+			if(type == 1){
+				bgTimeOver = plus.audio.createPlayer(url);
+				bgTimeOver.play(function() {}, function(e) {
+				});
+			}else{
+				if(bgTimeOver != null){
+					bgTimeOver.stop();
+					bgTimeOver = null;
+				}
+			}
+			
+			
+		}
+	}
+	
 	function startMusic(url) {
 		if(isVolume == true){
 			var bg = plus.audio.createPlayer(url);
 			bg.play(function() {}, function(e) {
-				console.log("=" + '播放音频文件1"' + url + '"失败：' + e.message)
 			});
 		}
 	}
@@ -725,8 +820,6 @@
 			canvas.width = width * scaleBy; //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
 			canvas.height = (height + offsetTop) * scaleBy; // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
 
-			console.log("====scaleBy1== " + canvas.width);
-			console.log("====scaleBy1== " + canvas.height);
 
 			context.scale(scaleBy, scaleBy);
 			var opts = { 
@@ -740,27 +833,23 @@
 			};
 			html2canvas(shareContent, opts).then(function(canvas) {
 				tvHint.style.display = "none";
-				console.log("html2canvas");
 					if(isHeight == false){
 		//				lineBottome.style.display = "none";
 						var bitmap = new plus.nativeObj.Bitmap();
-							console.log("55555555");
 							bitmap.loadBase64Data(canvas.toDataURL(), function() {
-								console.log("加载Base64图片数据成功");
 								bitmap.save("_doc/a.jpg", {
 									overwrite: true
 								}, function(i) {
-									console.log('保存图片成功');
+									plus.nativeUI.closeWaiting();
 									var imgtest = JSON.parse(JSON.stringify(i)).target;
-									pic = imgtest;
-									compressImage(imgtest, sb, bh);
+									pic = imgtest; 
+									shareAction(sb, bh); 
+									//compressImage(imgtest, sb, bh);
 								}, function(e) {
 									plus.nativeUI.closeWaiting();
-									console.log('保存图片失败：' + JSON.stringify(e));
 								});
 							}, function() {
 								plus.nativeUI.closeWaiting();
-								console.log('加载Base64图片数据失败：' + JSON.stringify(e));
 							});
 					}else{
 						//main2.init(canvas,sb, bh);
@@ -777,7 +866,7 @@
 				src: path1,
 				dst: path1,
 				overwrite: true,
-				quality: 20
+				quality: 100
 			},
 			function() {
 				plus.nativeUI.closeWaiting();
@@ -787,7 +876,6 @@
 			},
 			function(error) {
 				plus.nativeUI.closeWaiting();
-				console.log(error.code + "Compress error!" + error.message);
 				alert(error.code + "Compress error!" + error.message);
 			});
 	}
@@ -799,9 +887,7 @@
 	 */
 	function shareAction(sb, bh) {
 		bh = false;
-		console.log("=====分享操作");
 		if(!sb || !sb.s) {
-			console.log("=====无效的分享服务！");
 			return;
 		}
 		var msg = {
@@ -821,7 +907,6 @@
 			msg.thumbs = ['_www/logo.png'];
 			msg.pictures = ['_www/logo.png'];
 		} else {
-			console.log("pic====" + pic);
 			//			if(pic && pic.realUrl) {
 			//				console.log("pic====" + pic);
 			//				console.log("pic.realUrl====" + pic.realUrl);
@@ -852,14 +937,16 @@
 		s.send(msg, function() {
 			//countDownNum = 26;
 			//countDown();
+			startTimeOver(timeOverBgm,0); 
+			startBgm(mainbgm,1); 
 			mui.toast("求助完成，答题继续");
-			console.log('分享到"' + s.description + '"成功！');
 		}, function(e) {
 			isPauseCountDown = false;
 			countDownNum = 26;
 			countDown();
+			startTimeOver(timeOverBgm,0); 
+			startBgm(mainbgm,1); 
 			mui.toast("答题继续");
-			console.log('分享到"' + s.description + '"失败: ' + JSON.stringify(e));
 		});
 	}
 	// 打开分享

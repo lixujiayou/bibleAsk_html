@@ -65,6 +65,10 @@
 					<span class="mui-tab-label" style="font-size: 15px; color: black;">开始答题</span>
 				</div>
 			</ul>
+			
+			<div style="width: 100%; text-align: center; margin-top: 20px;">
+				<p id="tv_hint"></p>
+			</div>
 
 		</div>
 		
@@ -75,6 +79,8 @@
 <script type="text/javascript">
 	var lastId = ''; //最新新闻的id
 	var webview_detail = null; //详情页webview
+	var webview_rule = null; //详情页webview
+	var webview_aboutWe = null; //详情页webview
 	var titleNView = { //详情页原生导航配置
 		backgroundColor: '#f7f7f7', //导航栏背景色
 		titleText: '', //导航栏标题
@@ -86,6 +92,7 @@
 			//			color: '#cccccc'
 		}
 	}
+	var tvHint;
 	var coverImgUrl;
 	var coverTitle;
 	var coverHtmlText;
@@ -118,6 +125,8 @@
 		btFeedback = document.getElementById("bt_feedback");
 		btRule = document.getElementById("bt_rule");
 		btAbout = document.getElementById("bt_about");
+		tvHint = document.getElementById("tv_hint");
+		
 
 		initTap();
 		getCurDate();
@@ -134,19 +143,19 @@
 				"titleNView": titleNView
 			}
 		});
+		webview_aboutWe = mui.preload({
+			url: 'ask/aboutWe.html',
+			id: 'ask/aboutWe.html',
+		});
+		webview_rule= mui.preload({
+			url: 'ask/rule.html',
+			id: 'ask/rule.html',
+		});
 		//预加载反馈建议
 		webview_feedback = mui.preload({
 			url: 'ask/feedback.html',
 			id: 'ask/feedback.html',
-			//			styles: {
-			//				"render": "always",
-			//				"popGesture": "hide",
-			//				"bounce": "vertical",
-			//				"bounceBackground": "#efeff4",
-			//				"titleNView": titleNView
-			//			}
 		});
-
 	})
 
 	function initTap() {
@@ -159,10 +168,26 @@
 			//	open_feedback();
 		});
 		btRule.addEventListener("tap",function(){
-			mui.openWindow("ask/rule.html");
+			//mui.openWindow("ask/rule.html");
+			//open_rule();
+			mui.openWindow({
+				id: "ask/rule.html",
+			    url: "ask/rule.html",
+			    extras: {
+			        htmlText: ruleString
+			    }
+			});
 		});
 		btAbout.addEventListener("tap",function(){
-			mui.openWindow('ask/aboutWe.html');
+			//mui.openWindow('ask/aboutWe.html');
+			//open_aboutWe();
+			mui.openWindow({
+				id: "ask/aboutWe.html",
+			    url: "ask/aboutWe.html",
+			    extras: {
+			        htmlText: aboutWeString
+			    }
+			});
 		});
 
 		btContent.addEventListener("click", function() {
@@ -176,7 +201,8 @@
 			}
 		});
 	}
-
+	var ruleString;
+	var aboutWeString;
 	function getScriptures() {
 		var Scriptures = Bmob.Object.extend("Scriptures");
 		var query = new Bmob.Query(Scriptures);
@@ -189,6 +215,10 @@
 				} else {
 					var content = results[0].get("sContent");
 					var img = results[0].get("sImage");
+					var notice = results[0].get("sNotice");
+					ruleString = results[0].get("aRule");
+					aboutWeString = results[0].get("aboutWe");
+					tvHint.innerText = notice;
 					titleContent.innerText = content;
 					if(typeof(img) != "undefined") {
 						console.log("图片" + img._url);
@@ -277,7 +307,34 @@
 			webview_detail.show("slide-in-right", 300);
 		}, 150);
 	}
-
+function open_rule() { 
+		//若详情页尚未预加载完成，则延时等待再执行
+		if(!webview_rule) {
+			setTimeout(function() {
+				open_rule();
+			}, 100);
+		}
+		mui.fire(webview_rule, 'get_detail', {
+			htmlText: ruleString
+		});
+		setTimeout(function() {
+			webview_rule.show("slide-in-right", 300);
+		}, 150);
+	}
+function open_aboutWe() {
+		//若详情页尚未预加载完成，则延时等待再执行
+		if(!webview_aboutWe) {
+			setTimeout(function() {
+				open_aboutWe();
+			}, 100);
+		}
+		mui.fire(webview_aboutWe, 'get_detail', {
+			htmlText: aboutWeString
+		});
+		setTimeout(function() {
+			webview_aboutWe.show("slide-in-right", 300);
+		}, 150);
+	}
 	function getCurDate() {
 		var d = new Date();
 		var week;

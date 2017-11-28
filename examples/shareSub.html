@@ -92,9 +92,11 @@
 				<!--数据列表-->
 				<ul id="ul_shareList" class="mui-table-view" style="background: #f5f5f9;"></ul>
 			</div>
+			<div id="img_loading" style="width: 100%; text-align: center;">  
+				<img style="width: 160px;height: 160px; text-align: center;" src="../images/icon_loading.png" />
+			</div>
 		</div>
 	</body>
-
 </html>
 <script type="text/javascript">
 	Bmob.initialize("21bfb1f1037b3963aaa2fe01bee1bc68", "2ad5eef1e9db172e8448216b0f16a5b8");
@@ -115,7 +117,8 @@
 	}
 
 	var pageLoadNum = 0; //本次加载条数
-
+	
+	var imgLoading;
 	//mui初始化，配置下拉刷新
 	mui.init({
 		pullRefresh: {
@@ -183,15 +186,18 @@
 		query.descending("createdAt");
 		query.find({
 			success: function(results) {
+				img_loading = document.getElementById("img_loading");
+				img_loading.style.display = "none";
 				isLoadClose = true;
 				if(typeof(results) != "undefined") {
+					
 					pageLoadNum = results.length;
 					if(typeof(shareList) == "undefined") {
 						shareList = results;
 					} else {
 						for(var i = 0; i < results.length; i++) {
 							shareList.push(results[i]);
-						}
+						}      
 					}
 					console.log("上拉shareList==" + shareList.length);
 					for(var i = 0; i < results.length; i++) {
@@ -234,6 +240,8 @@
 
 			},
 			erro: function(erro) {
+				img_loading = document.getElementById("img_loading");
+				img_loading.style.display = "none";
 				isLoadClose = true;
 				mui.toast(erro.Message + " " + erro.code);
 			}
@@ -250,6 +258,8 @@
 		console.log("开始下拉");
 		query.find({
 			success: function(results) {
+				img_loading = document.getElementById("img_loading");
+				img_loading.style.display = "none";
 				isLoadClose = true;
 				if(typeof(results) != "undefined") {
 					pageLoadNum = results.length;
@@ -307,6 +317,8 @@
 				}
 			},
 			erro: function(erro) {
+				img_loading = document.getElementById("img_loading");
+				img_loading.style.display = "none";
 				console.log("下拉erro");
 				mui.toast(erro.Message + " " + erro.code);
 				mui('#pullrefresh').pullRefresh().endPulldown(); //收回cicle

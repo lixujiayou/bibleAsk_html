@@ -22,7 +22,7 @@
 		</header>
 		
 		
-		<div class="mui-content" style="margin-top: 10px; padding-left: 6px;padding-right: 6px;">
+		<div id="tv_content" class="mui-content" style="margin-top: 10px; padding-left: 6px;padding-right: 6px;">
 		   
 			<p>答题分为圣经、摩西五经、大小先知书、历史诗歌书、四福音、新约书信六大类。</p>
 		    <p>规则：</P>
@@ -36,20 +36,21 @@
 		   <p style="color: black; font-size: 14px;">1、暂停求助*1（可将答题分享到微信或朋友圈，计时暂停，返回后继续计时）；</p>
 		    	<p style="color: black; font-size: 14px;">2、去掉两个错误答案*1，，每次答题后初始化。</p>
 		   <p>称号：</p>
-		     <p style="color: black; font-size: 14px;">≥9600      在路上</p>
-		     <p style="color: black; font-size: 14px;">≥7600 ＆ ＜9600  摸爬滚打</p>
-		     <p style="color: black; font-size: 14px;">≥3600 ＆ ＜7600  跌跌撞撞</p>
-		     <p style="color: black; font-size: 14px;">≥2000 ＆ ＜3600  还差一点</p>
-		     <p style="color: black; font-size: 14px;">＜2000       云里雾里</p>
+		     <p style="color: black; font-size: 14px;">32500      在路上</p>
+		     <p style="color: black; font-size: 14px;">≥20000 ＆ ＜32500  摸爬滚打</p>
+		     <p style="color: black; font-size: 14px;">≥5000 ＆ ＜20000  跌跌撞撞</p>
+		     <p style="color: black; font-size: 14px;">≥1000 ＆ ＜5000  还差一点</p>
+		     <p style="color: black; font-size: 14px;">＜1000       云里雾里</p>
 		   
 		    <p> 分享:</p>
 		     <p style="color: black; font-size: 14px;">不定期更新分享内容。</p>
-		     <p style="color: black; font-size: 14px;">欢迎弟兄姊妹投稿，可发至邮箱bibleAsk@163.com，并注明出处。"</p>
+		     <p style="color: black; font-size: 14px;">欢迎弟兄姊妹投稿，可发至邮箱bibleAsk@163.com，并注明出处。</p>
 		</div>
 	</body>
 
 </html>
 <script type="text/javascript">
+	var tvContent;
 	mui.plusReady(function(){
 				var wv=plus.webview.currentWebview();
 				// 关闭侧滑返回功能
@@ -58,5 +59,15 @@
 				wv.setStyle({'popGesture':'close'});
 				// 侧滑返回后隐藏webview
 				//wv.setStyle({'popGesture':'hide'});
+				
+				tvContent = document.getElementById("tv_content");
+				 var self = plus.webview.currentWebview();
+				 var content =self.htmlText; 
+				 if(content != null && content != "undefined"){
+				 	tvContent.innerHTML = content;
+				 }
 			})
+	
+	
+
 </script>
