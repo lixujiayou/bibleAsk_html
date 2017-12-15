@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mx.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/list-to-detail.css" />
+		<style type="text/css">
+			#sharecontent {
+				width: 80%;
+				-webkit-user-select: text;
+				border: 1px solid #6C6C6C;
+				-webkit-border-radius: 2px;
+				border-radius: 2px;
+			}
+			.sharehref {
+				width: 80%;
+				-webkit-user-select: text;
+				border: 1px solid #6C6C6C;
+				-webkit-border-radius: 2px;
+				border-radius: 2px;
+				margin-bottom: .5em;
+			}
+			
+			
+		</style>
+		<style type="text/css">
+			div.double {
+				border-style: outset;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/html2canvas.js"></script>
+		<script src="../../js/Canvas2Image.js"></script>
+		<script src="../../js/vue.min.js"></script>
+		<script src="../../js/jquery-2.1.0.js"></script>
+		<!--<script src="com"></script>-->
+		<script type="text/javascript">
+		</script>
+
+		<div id="page" class="mui-content">
+			<div  id="line_top" class="mui-content"  style=" display: none; padding-top: 0px; margin-top: 0px;">
+				<div id="line_hint" style="display: none;">
+					<p style=" padding-left: 10px; padding-right: 10px; font-size: 12px;">......<br />非常抱歉,由于文章较长,图片长度上限,给您带来的不便请谅解.<br />阅读全文请下载'圣经问答App'.</p>
+				</div>
+				<hr id="line_gone" style=" border : 1px dashed #666666;" />
+				<div id="view_gone" style=" padding-left: 10px; padding-right: 10px; padding-bottom: 16px;">
+					<img src="../../images/ic_launcher.png" />
+					<p style="display: inline;position: absolute; margin-left: 10px;">圣经问答<br />扎根于圣经，建基于祷告。</p>
+				</div>
+			</div>
+
+			<!--顶部banner图 开始-->
+			<div id="kr-article-banner" style="display: block;" class="kr-article-banner">
+				<div id="kr-article-cover" class="kr-article-cover">
+					<img :src="cover">
+				</div>
+				<h2 id="kr-article-title" class="kr-article-title">{{title}}</h2>
+			</div>
+			<!--顶部banner图 结束-->
+
+			<div class="kr-article-content">
+
+				<!-- 文章作者、发布时间等信息 -->
+				<div class="kr-article-meta">
+					<!--<div id="kr-article-author" class="kr-article-author">{{author}}</div>
+					<div class="kr-article-text">发表于</div>
+					<div id="kr-article-time" class="kr-article-time">{{time}}</div>-->
+				</div>
+				<!--文章详细内容-->
+				<div id="kr-article-article" class="kr-article-article" v-html="content">
+					<p>本文转自微信公众号:福音时报/赵雅各</p>
+					<p>一年一度的圣诞节就要到了，很多教会都在紧锣密鼓地为这一节日忙碌。<span style="color: black;">然而昨天晚上却听到有些教会的人不打算过圣诞节，原因是对这一节日存在争议，认为12月25日并非是主降生的真实节日，因此认为，过圣诞节就是偏离了真理，随同了世界吃吃喝喝宴乐的世俗。</span></p>
+					<p>笔者尊重个人的意愿和想法，但对于有些教会，也变相地取消圣诞节的做法，我本人在思想上不太能理解。原因是大家都知道，<span style="color: black;">圣诞节是最佳的传福音的节日，如果不过圣诞节或只划定自己的小圈子自己过圣诞节，将错过让人对基督教有一个了解的大好的时机。</span></p>
+					<p>有这么一间教会，前两年还过圣诞节，每次为圣诞节都精心准备了节目和礼物，对社会开放。只要来到教会的每个人都会得到一份礼物，连续两年，每到圣诞节，教会都是人山人海。教会演职人员很辛苦，要不停地加场演出，礼物也是常常不够用，要不时地从商场购进。</p>
+					<p>一次圣诞节过后，弟兄姊妹的确很辛苦。后来有人提出，这样做不合适。“圣诞节本来是我们基督徒的节日，<span style="color: black;">我们很辛苦地为那些不信神的人劳碌，是不是有些不合算？”因此有人提出下一年圣诞节要有呼召，要有决志祷告的环节。</span></p>
+					<p>到了第二年的圣诞节与往常一样，依然是人很多，礼品不够用。当节目进行到呼召之时，只有很少的人会被劝着或被信主的同伴强拉扯到了台前。看到这样的情景，<span style="color: black;">教会的弟兄姊妹都很失望。因没有看到预期想要的结果，然而，更大的失望还在后面，圣诞节决志祷告的新人们，在后来的教会聚会中陆续没有了身影。</span></p>
+					<p><span style="color: black;">因此，这间教会决定以后不对社会开放过圣诞节了。</span>圣诞节那天停止一切聚会，而是把节日改在了圣诞节日的前后聚会上，这样就避免社会上的人在节日期间来到教会。没有了外来人员，只有教会里的弟兄姊妹来过圣诞节，一下真轻松了不少。</p>
+					<img src="http://bmob-cdn-9637.b0.upaiyun.com/2017/12/04/ffd9121e40ea18028084fc1bb46ff253.jpg" />
+					<a>这样的圣诞节真的好吗？</a>
+					<p>拿自己信主快三十年的经历来说，时常还是会有软弱的时候，甚至有时信心会跌入谷底。一个老信徒都会常出现的现象，让一些仅仅听了一篇道，在很浓的节日气氛中被感染之人，一下子成为奋起的新人怎么可能？不能期望一下子就看到果效，<span style="color: black;">我们只管去播种，主会负责其他的事情。</span></p>
+					<p>有一个人在博客中传福音，被一个人看到了，这个人信了主，随后这个人把福音又传给了另外一个人。而另外这个人来到了非洲，在那里做成了很大的事工，让很多非洲人得救。对于在博客中传福音的人来说，他完全不知道远在非洲所发生的事情会与自己有关，但神知道这一切，一切都在神的掌管之中。所以<span style="color: black;">我们看不到果效，不证明我们的所做没有意义。</span></p>
+					<p>受这个故事的启发，我也开始在博客上传福音，快三年的时间没得到一个回音，在我很沮丧之时，也是在这个季节，这个时间段，有一个小姑娘给我留言“这个圣诞节我要打扮漂漂亮亮滴到教会去过圣诞节。”看到留言我很是兴奋。</p>
+					今天我在想，那个小姑娘会不会到了一个大门紧锁的一间教会？会不会很失望？她会不会是神要用的贵重器皿？<br />
+					保罗在罗马书9章2-3节中说：“我是大有忧愁，心里时常伤痛，为我弟兄，我的骨肉之亲，就是被咒诅，与基督分离，我也愿意。”<br />
+					这是保罗为福音事业的一种情怀。我觉得今天我们基督徒缺少的就是这种情怀。我们常常讲基督教被社会边缘化，其实是我们自己把自己禁锢在“自以为义”、“分别为圣”的高墙里。<br />
+					<p>记述此时，让我想起了另外一个小故事。</p>
+					<p>在一个严冬的清晨，在修道院侍奉的德勒莎修女透过修道院刚刚倒塌的围墙，看到外面沿街乞讨的残疾乞丐，她就从那个倒塌的院墙迈出去，从此再没有回去。</p>
+					<p>她用一生照顾这些无家可归的临终病人，用爱的行动诠释信仰的真理。这就成了她一生的异象。无论经历过多少挫折，受到过多少伤害，她依旧没有违背她内心的负担，因为那就是她的异象。<span style="color: black;">德勒莎修女说过这样一句话：我巴不得全世界所有教堂的院墙都倒下去，好让教会走进世界。</span></p>
+					<h4>愿我们借助圣诞节的契机将福音广传！</h3>
+					<p>注：本文为特约/自由撰稿人文章，作者系辽宁一名基督徒。文中观点代表作者立场，供读者参考！</p>
+					
+				</div>
+			</div>
+				
+				
+			<div id="line_bottome" class="mui-content"  style=" display: none; padding-top: 0px; margin-top: 0px;">
+				<hr id="line_gone" style=" border : 1px dashed #666666;" />
+				<div id="view_gone" style=" padding-left: 10px; padding-right: 10px; padding-bottom: 16px;">
+					<img src="../../images/ic_launcher.png" />
+					<p style="display: inline;position: absolute; margin-left: 10px;">圣经问答<br />扎根于圣经，建基于祷告。</p>
+				</div>
+			</div>
+		</div>
+		<img class="m-tab" id="img_test" src="../../images/icon_share_go.png" />
+	</body>
+</html>
+
+<script type="text/javascript ">
+	mui.init();
+
+	
+
+	
+	
+	
+
+	
+</script>
